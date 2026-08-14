@@ -172,7 +172,7 @@ export function WorldMap({
 
         {uniquePoints.map((point) => {
           const { x, y } = projectPoint(point.lat, point.lng);
-          const labelY = point.labelSide === "top" ? y - 46 : y + 20;
+          const labelY = point.labelSide === "top" ? y - 68 : y + 20;
           return (
             <g key={point.label ?? `${point.lat},${point.lng}`}>
               <motion.g
