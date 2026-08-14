@@ -7,6 +7,7 @@ import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { ExperienceTimeline } from "@/components/sections/experience-timeline";
 import { WorldMap } from "@/components/ui/map";
 import { QrCode } from "@/components/qr-code";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "About — Metwiser",
@@ -70,12 +71,16 @@ export default function AboutPage() {
               <Eyebrow>About Us</Eyebrow>
             </Reveal>
             <Reveal delay={0.05}>
-              <h1 className="font-display text-4xl leading-[1.05] font-bold tracking-tight text-ink uppercase sm:text-5xl lg:text-6xl">
-                Built on experience.
-                <br />
-                Driven by a new
-                <br />
-                generation.
+              <h1 className="font-display leading-[1.05] font-bold tracking-tight text-ink uppercase">
+                <span className="block text-4xl sm:text-5xl lg:text-6xl">
+                  Built on experience.
+                </span>
+                <span className="block text-4xl sm:text-5xl lg:text-6xl">
+                  Driven by a
+                </span>
+                <span className="brand-gradient-text block text-5xl sm:text-6xl lg:text-7xl">
+                  new generation.
+                </span>
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
@@ -92,7 +97,11 @@ export default function AboutPage() {
               alt="Two hands passing a young tree growing from soil, with a city skyline in the background"
               width={800}
               height={1000}
-              className="aspect-[4/5] w-full object-cover"
+              className={cn(
+                "aspect-[4/5] w-full object-cover",
+                "mask-radial-[85%_75%] mask-radial-from-70% mask-radial-to-100% mask-radial-at-center",
+                "mask-t-from-80% mask-t-to-100% mask-b-from-80% mask-b-to-100%",
+              )}
               priority
             />
           </Reveal>
