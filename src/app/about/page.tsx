@@ -71,7 +71,6 @@ const GLOBAL_SCALE = [
 
 const PARTNERS = [
   { name: "Pawfect", file: "pawfect.png" },
-  { name: "Pixie", file: "pixie.png" },
   { name: "Finest Pet Food", file: "finest-pet-food.png" },
 ];
 
@@ -338,9 +337,9 @@ export default function AboutPage() {
                 <Image
                   src={`/partners/${partner.file}`}
                   alt={partner.name}
-                  width={160}
-                  height={64}
-                  className="h-10 w-auto object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0 sm:h-12"
+                  width={220}
+                  height={90}
+                  className="h-16 w-auto object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0 sm:h-20"
                 />
               </StaggerItem>
             ))}

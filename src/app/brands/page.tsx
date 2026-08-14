@@ -48,29 +48,23 @@ export default function BrandsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-16 pb-16 sm:pt-20 sm:pb-20">
-        <Container className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-          <Reveal className="flex flex-col gap-5">
+      <section className="relative py-24 sm:py-32">
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <Image src="/brands/hero.jpg" alt="" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-paper/20" />
+        </div>
+
+        <Container>
+          <Reveal className="flex max-w-md flex-col gap-5">
             <Eyebrow>Our Brands</Eyebrow>
             <h1 className="font-display text-4xl leading-[1.05] font-bold tracking-tight text-ink uppercase sm:text-5xl">
               The brands we&apos;re building.
             </h1>
-            <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
+            <p className="text-[0.95rem] leading-relaxed text-body">
               From retail on the ground to products on the shelf, each brand
               in the Metwiser family tackles a different part of the pet
               industry.
             </p>
-          </Reveal>
-
-          <Reveal delay={0.1}>
-            <Image
-              src="/brands/hero.jpg"
-              alt=""
-              width={900}
-              height={700}
-              className="w-full object-contain"
-              priority
-            />
           </Reveal>
         </Container>
       </section>
@@ -125,16 +119,18 @@ export default function BrandsPage() {
       <section className="border-t border-hairline bg-paper-soft py-20 sm:py-28">
         <Container className="flex flex-col gap-14">
           <Reveal className="flex flex-col gap-6 lg:max-w-2xl">
-            <Image
-              src="/partners/pawfect.png"
-              alt="Pawfect"
-              width={200}
-              height={64}
-              className="h-10 w-auto object-contain"
-            />
-            <h2 className="font-display text-3xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-4xl">
-              Pawfect
-            </h2>
+            <div className="flex items-center gap-4">
+              <Image
+                src="/partners/pawfect.png"
+                alt="Pawfect"
+                width={120}
+                height={120}
+                className="h-16 w-16 object-contain sm:h-20 sm:w-20"
+              />
+              <h2 className="font-display text-3xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-4xl">
+                Pawfect
+              </h2>
+            </div>
             <p className="text-[0.95rem] leading-relaxed text-body">
               The Pawfect range consists of various natural snacks to pamper
               pets. From freeze-dried fruit to crunchy cheese treats and from

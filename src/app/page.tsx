@@ -15,10 +15,10 @@ import { AnimatedCounter } from "@/components/animated-counter";
 import { FinalCta } from "@/components/sections/final-cta";
 
 const STATS = [
-  { value: 20, suffix: "+", label: "Countries served" },
-  { value: 150, suffix: "+", label: "SKUs delivered yearly" },
-  { value: 98, suffix: "%", label: "On-time fulfillment" },
-  { value: 12, suffix: "", label: "Manufacturing partners" },
+  { value: 4, prefix: "", suffix: "", label: "Countries served" },
+  { value: 100, prefix: "+", suffix: "", label: "SKUs developed" },
+  { value: 8, prefix: "", suffix: "", label: "Retail stores" },
+  { value: 2, prefix: "", suffix: "", label: "Manufacturing partners" },
 ];
 
 const PROCESS = [
@@ -147,7 +147,11 @@ export default function Home() {
               className="flex flex-col items-center gap-1 px-4 py-10 text-center"
             >
               <span className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                <AnimatedCounter
+                  value={stat.value}
+                  prefix={stat.prefix}
+                  suffix={stat.suffix}
+                />
               </span>
               <span className="text-[0.68rem] font-semibold tracking-[0.12em] text-muted uppercase">
                 {stat.label}
