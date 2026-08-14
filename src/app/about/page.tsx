@@ -109,11 +109,21 @@ export default function AboutPage() {
       </section>
 
       {/* 02 — The New Beginning */}
-      <section className="border-t border-hairline py-24 sm:py-32">
+      <section className="relative border-t border-hairline py-24 sm:py-32">
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <Image
+            src="/about/beginning-bg.jpg"
+            alt=""
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-paper/88" />
+        </div>
+
         <Container className="grid items-center gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
           <Reveal className="flex flex-col gap-5 lg:order-1">
             <h2 className="font-display text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
-              Starting from zero.
+              Starting from zero again.
               <br />
               Thinking global.
             </h2>
