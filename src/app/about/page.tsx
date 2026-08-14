@@ -88,8 +88,8 @@ export default function AboutPage() {
 
           <Reveal delay={0.15} y={30} className="lg:-my-10 lg:-mr-10">
             <Image
-              src="/about/hero.jpg"
-              alt="A Golden Retriever and a cat moving through a contemporary architectural space"
+              src="/about/here.png"
+              alt="Two hands passing a young tree growing from soil, with a city skyline in the background"
               width={800}
               height={1000}
               className="aspect-[4/5] w-full object-cover"
