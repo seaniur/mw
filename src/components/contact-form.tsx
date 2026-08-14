@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { AlertCircle, ArrowUpRight, CheckCircle2 } from "lucide-react";
 
 const inputClasses =
   "w-full rounded-xl border border-hairline bg-paper px-4 py-3 text-sm text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange transition-colors";
@@ -10,18 +10,45 @@ const inputClasses =
 const labelClasses =
   "text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase";
 
-// Submission is a local placeholder until the WordPress/API integration is wired up.
+// PHP endpoint deployed alongside the static export (public/api/contact.php).
+const CONTACT_ENDPOINT = "/api/contact.php";
+
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
-    window.setTimeout(() => {
-      setSubmitting(false);
+    setError(null);
+
+    const data = Object.fromEntries(new FormData(event.currentTarget).entries());
+
+    try {
+      const response = await fetch(CONTACT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok || !result?.success) {
+        throw new Error(
+          result?.message ?? "Something went wrong. Please try again.",
+        );
+      }
+
       setSubmitted(true);
-    }, 600);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again or email us directly.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (submitted) {
@@ -54,6 +81,16 @@ export function ContactForm() {
         transition={{ duration: 0.4 }}
         className="flex flex-col gap-5"
       >
+        {/* Honeypot — hidden from real visitors, bots that autofill every field trip it. */}
+        <input
+          type="text"
+          name="hp_field"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="absolute h-0 w-0 overflow-hidden opacity-0"
+        />
+
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="flex flex-col gap-2">
             <label htmlFor="name" className={labelClasses}>
@@ -130,6 +167,13 @@ export function ContactForm() {
             placeholder="Tell us about your product, timeline, and target markets."
           />
         </div>
+
+        {error ? (
+          <div role="alert" className="flex items-start gap-2 text-sm text-terracotta">
+            <AlertCircle size={16} className="mt-0.5 shrink-0" />
+            <span>{error}</span>
+          </div>
+        ) : null}
 
         <button
           type="submit"
