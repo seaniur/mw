@@ -33,10 +33,13 @@ export function SiteHeader() {
       className={cn(
         "sticky top-0 z-50 transition-all duration-300",
         scrolled || open
-          ? "border-b border-hairline bg-paper/85 shadow-[0_12px_24px_-16px_rgba(33,28,24,0.3)] backdrop-blur-md"
-          : "border-b border-transparent bg-transparent",
+          ? "bg-paper/85 shadow-[0_12px_24px_-16px_rgba(33,28,24,0.3)] backdrop-blur-md"
+          : "bg-transparent",
       )}
     >
+      {scrolled || open ? (
+        <div className="brand-gradient absolute inset-x-0 bottom-0 h-[2px]" />
+      ) : null}
       <Container className="flex h-18 items-center justify-between py-4">
         <Link href="/" className="shrink-0">
           <Logo />

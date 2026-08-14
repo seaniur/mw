@@ -139,7 +139,7 @@ export function WorldMap({
                 d={path}
                 fill="none"
                 stroke="url(#mw-map-path)"
-                strokeWidth="1"
+                strokeWidth="1.6"
                 initial={{ pathLength: 0 }}
                 animate={
                   loop ? { pathLength: [0, 0, 1, 1, 0] } : { pathLength: 1 }
@@ -172,7 +172,7 @@ export function WorldMap({
 
         {uniquePoints.map((point) => {
           const { x, y } = projectPoint(point.lat, point.lng);
-          const labelY = point.labelSide === "top" ? y - 34 : y + 8;
+          const labelY = point.labelSide === "top" ? y - 30 : y + 8;
           return (
             <g key={point.label ?? `${point.lat},${point.lng}`}>
               <motion.g
@@ -183,12 +183,12 @@ export function WorldMap({
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 style={{ transformOrigin: `${x}px ${y}px` }}
               >
-                <circle cx={x} cy={y} r="3" fill={lineColor} />
-                <circle cx={x} cy={y} r="3" fill={lineColor} opacity="0.5">
+                <circle cx={x} cy={y} r="4" fill={lineColor} />
+                <circle cx={x} cy={y} r="4" fill={lineColor} opacity="0.5">
                   <animate
                     attributeName="r"
-                    from="3"
-                    to="11"
+                    from="4"
+                    to="13"
                     dur="2s"
                     repeatCount="indefinite"
                   />
@@ -203,9 +203,15 @@ export function WorldMap({
               </motion.g>
 
               {showLabels && point.label ? (
-                <foreignObject x={x - 55} y={labelY} width="110" height="26">
+                <foreignObject
+                  x={x - 90}
+                  y={labelY}
+                  width="180"
+                  height="22"
+                  overflow="visible"
+                >
                   <div className="flex justify-center">
-                    <span className="font-mono text-[0.72rem] font-medium tracking-[0.06em] text-ink uppercase bg-paper/90 px-1">
+                    <span className="bg-paper inline-block px-2 py-1 font-mono text-[0.95rem] font-medium tracking-[0.04em] whitespace-nowrap text-ink uppercase">
                       {point.label}
                     </span>
                   </div>

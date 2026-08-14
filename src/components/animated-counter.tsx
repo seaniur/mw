@@ -7,10 +7,13 @@ export function AnimatedCounter({
   value,
   suffix = "",
   prefix = "",
+  format = false,
 }: {
   value: number;
   suffix?: string;
   prefix?: string;
+  /** Render the number with thousands separators, e.g. 100,000 */
+  format?: boolean;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px" });
@@ -30,7 +33,7 @@ export function AnimatedCounter({
   return (
     <span ref={ref}>
       {prefix}
-      {display}
+      {format ? display.toLocaleString("en-US") : display}
       {suffix}
     </span>
   );

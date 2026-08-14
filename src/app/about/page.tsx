@@ -4,8 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Container, Eyebrow, GradientRule } from "@/components/ui";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { AnimatedCounter } from "@/components/animated-counter";
 import { WorldMap } from "@/components/ui/map";
-import { QrCode } from "@/components/qr-code";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -16,27 +16,23 @@ export const metadata: Metadata = {
 
 const LOCATIONS = [
   {
-    country: "United Kingdom",
-    category: "Premium Distribution",
-    description: "Premium pet product distribution.",
-  },
-  {
-    country: "United States",
-    category: "Distribution + E-Commerce",
-    description:
-      "Premium pet products through distribution and e-commerce channels.",
-  },
-  {
-    country: "Türkiye",
-    category: "Retail + Distribution",
-    description:
-      "A growing presence in premium pet retail and distribution.",
-    emphasis: { value: "08", label: "Active Stores" },
-  },
-  {
-    country: "Canada",
-    category: "Business Development",
+    flags: ["🇨🇦"],
+    name: "Canada",
+    category: "Business Development Center",
     description: "A platform for developing the next stage of our pet business.",
+  },
+  {
+    flags: ["🇹🇷"],
+    name: "Türkiye",
+    category: "Chain Store, E-Commerce & Distribution",
+    description: "A growing presence in premium pet retail and distribution.",
+  },
+  {
+    flags: ["🇬🇧", "🇺🇸"],
+    name: "United Kingdom & United States",
+    category: "Distribution & E-Commerce",
+    description:
+      "Premium pet products delivered through distribution and e-commerce channels.",
   },
 ];
 
@@ -53,10 +49,19 @@ const MAP_DOTS = [
 ];
 
 const GLOBAL_SCALE = [
-  { value: "2021", label: "Founded" },
-  { value: "08", label: "Active Pet Stores" },
-  { value: "04", label: "International Markets" },
-  { value: "03", label: "Core Channels", sub: "Distribution · Retail · E-Commerce" },
+  { value: "2022", label: "Founded", sub: "From Scratch" },
+  { value: "03", label: "International Markets", sub: "UK, US & Türkiye" },
+  {
+    value: "03",
+    label: "Core Channels",
+    sub: "Retail, Distribution & E-Commerce",
+  },
+];
+
+const PARTNERS = [
+  { name: "Pawfect", file: "pawfect.png" },
+  { name: "Pixie", file: "pixie.png" },
+  { name: "Finest Pet Food", file: "finest-pet-food.png" },
 ];
 
 export default function AboutPage() {
@@ -84,7 +89,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
-                Founded in 2021, we began with a clear ambition: to build a
+                Founded in 2022, we began with a clear ambition: to build a
                 modern, international business in the pet industry.
               </p>
             </Reveal>
@@ -128,7 +133,7 @@ export default function AboutPage() {
               Thinking global.
             </h2>
             <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
-              What started in 2021 as a new venture has grown into an
+              What started in 2022 as a new venture has grown into an
               expanding international presence across the pet industry.
             </p>
             <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
@@ -142,32 +147,29 @@ export default function AboutPage() {
           <Reveal delay={0.1} className="flex items-center gap-5 lg:order-2 lg:justify-end">
             <GradientRule className="h-24 w-px shrink-0 sm:h-32" />
             <span className="font-display text-[5.5rem] leading-none font-bold tracking-tight text-ink sm:text-[7rem] lg:text-[8.5rem]">
-              2021
+              2022
             </span>
           </Reveal>
         </Container>
       </section>
 
       {/* 03 — Experience */}
-      <section className="relative border-t border-hairline py-24 sm:py-32">
+      <section className="relative border-t border-hairline py-16 sm:py-20">
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <Image
             src="/about/factory.jpg"
             alt=""
             fill
-            className="object-cover"
+            className="scale-105 object-cover opacity-50 blur-[2px]"
           />
-          <div className="absolute inset-0 bg-paper/82" />
+          <div className="absolute inset-0 bg-paper/88" />
         </div>
 
-        <Container className="flex flex-col gap-14">
-          <Reveal>
+        <Container className="flex flex-col items-center gap-10 text-center">
+          <Reveal className="flex flex-col items-center gap-5">
             <h2 className="font-display max-w-lg text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
               Experience that shapes how we build.
             </h2>
-          </Reveal>
-
-          <Reveal delay={0.05}>
             <p className="max-w-lg text-[0.95rem] leading-relaxed text-body">
               Decades of experience in building and scaling businesses have
               shaped the way we operate today — with a focus on quality,
@@ -175,23 +177,27 @@ export default function AboutPage() {
             </p>
           </Reveal>
 
-          <div className="grid gap-10 border-t border-hairline pt-10 sm:grid-cols-2 sm:gap-16">
-            <Reveal delay={0.1} className="flex flex-col gap-2">
-              <span className="brand-gradient-text font-display text-6xl leading-none font-bold tracking-tight sm:text-7xl">
-                USD 5B+
-              </span>
-              <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
-                Annual ecosystem turnover
-              </span>
+          <div className="grid w-full max-w-2xl gap-6 sm:grid-cols-2">
+            <Reveal delay={0.1}>
+              <div className="flex flex-col items-center gap-2 rounded-2xl bg-paper px-8 py-10 shadow-[0_20px_40px_-20px_rgba(33,28,24,0.25)]">
+                <span className="brand-gradient-text font-display text-5xl leading-none font-bold tracking-tight sm:text-6xl">
+                  <AnimatedCounter value={5} prefix="USD " suffix="B+" />
+                </span>
+                <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
+                  Annual ecosystem turnover
+                </span>
+              </div>
             </Reveal>
 
-            <Reveal delay={0.15} className="flex flex-col gap-2">
-              <span className="font-display text-ink text-6xl leading-none font-bold tracking-tight sm:text-7xl">
-                100,000+
-              </span>
-              <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
-                Tons of products produced annually
-              </span>
+            <Reveal delay={0.15}>
+              <div className="flex flex-col items-center gap-2 rounded-2xl bg-paper px-8 py-10 shadow-[0_20px_40px_-20px_rgba(33,28,24,0.25)]">
+                <span className="font-display text-6xl leading-none font-bold tracking-tight text-ink sm:text-6xl">
+                  <AnimatedCounter value={100000} suffix="+" format />
+                </span>
+                <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
+                  Tons of products produced annually
+                </span>
+              </div>
             </Reveal>
           </div>
 
@@ -206,89 +212,105 @@ export default function AboutPage() {
 
       {/* 04 — Global Footprint */}
       <section className="border-t border-hairline py-24 sm:py-32">
-        <Container className="flex flex-col gap-14">
-          <div className="flex flex-col gap-4">
-            <Reveal>
-              <Eyebrow>Global Footprint</Eyebrow>
-            </Reveal>
-            <Reveal delay={0.05}>
-              <h2 className="font-display max-w-xl text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
-                Our global footprint
-              </h2>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p className="max-w-lg text-[0.95rem] leading-relaxed text-body">
-                From premium distribution to retail and e-commerce, our
-                presence continues to grow across key international markets.
-              </p>
-            </Reveal>
-          </div>
+        <Container>
+          <div className="grid gap-14 lg:grid-cols-2 lg:gap-12">
+            <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-4">
+                <Reveal>
+                  <Eyebrow>Global Footprint</Eyebrow>
+                </Reveal>
+                <Reveal delay={0.05}>
+                  <h2 className="font-display max-w-xl text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
+                    Our global footprint
+                  </h2>
+                </Reveal>
+                <Reveal delay={0.1}>
+                  <p className="max-w-lg text-[0.95rem] leading-relaxed text-body">
+                    From premium distribution to retail and e-commerce, our
+                    presence continues to grow across key international
+                    markets.
+                  </p>
+                </Reveal>
+              </div>
 
-          <Reveal delay={0.1}>
-            <WorldMap dots={MAP_DOTS} />
-          </Reveal>
-
-          <div className="divide-y divide-hairline border-t border-hairline">
-            {LOCATIONS.map((location) => (
-              <div
-                key={location.country}
-                className="grid gap-3 py-7 sm:grid-cols-[1fr_1.4fr] sm:items-baseline sm:gap-8"
-              >
-                <span className="font-display text-xl font-bold tracking-tight text-ink sm:text-2xl">
-                  {location.country}
-                </span>
-                <div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-                  <div className="flex flex-col gap-1.5">
-                    <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-gold uppercase">
-                      {location.category}
-                    </span>
-                    <span className="max-w-sm text-sm leading-relaxed text-body">
-                      {location.description}
-                    </span>
-                  </div>
-                  {location.emphasis ? (
-                    <div className="flex shrink-0 items-baseline gap-2">
-                      <span className="font-display text-3xl font-bold text-ink">
-                        {location.emphasis.value}
+              <Reveal delay={0.1}>
+                <div className="divide-y divide-hairline border-t border-hairline">
+                  {LOCATIONS.map((location) => (
+                    <div key={location.name} className="flex flex-col gap-2 py-7">
+                      <div className="flex items-center gap-2.5">
+                        <span className="text-xl leading-none">
+                          {location.flags.join(" ")}
+                        </span>
+                        <span className="font-display text-lg font-bold tracking-tight text-ink sm:text-xl">
+                          {location.name}
+                        </span>
+                      </div>
+                      <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-gold uppercase">
+                        {location.category}
                       </span>
-                      <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
-                        {location.emphasis.label}
+                      <span className="max-w-sm text-sm leading-relaxed text-body">
+                        {location.description}
                       </span>
                     </div>
-                  ) : null}
+                  ))}
                 </div>
-              </div>
-            ))}
+              </Reveal>
+            </div>
+
+            <Reveal delay={0.15} className="lg:sticky lg:top-28 lg:self-start">
+              <WorldMap dots={MAP_DOTS} />
+            </Reveal>
           </div>
         </Container>
       </section>
 
       {/* 05 — Global Scale */}
-      <section className="border-t border-hairline py-24 sm:py-32">
+      <section className="border-t border-hairline bg-[#f8f6ea] py-24 sm:py-32">
         <Container className="flex flex-col gap-14">
           <Reveal>
             <h2 className="font-display max-w-2xl text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
-              From one idea to a growing global presence.
+              Metwiser — from one idea to a growing global presence.
             </h2>
           </Reveal>
 
-          <Stagger className="grid grid-cols-2 divide-x divide-y divide-hairline border-y border-hairline lg:grid-cols-4 lg:divide-y-0">
+          <Stagger className="grid gap-6 sm:grid-cols-3">
             {GLOBAL_SCALE.map((stat) => (
-              <StaggerItem
-                key={stat.label}
-                className="flex flex-col gap-1.5 px-2 py-10 sm:px-6"
-              >
-                <span className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-                  {stat.value}
-                </span>
-                <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
-                  {stat.label}
-                </span>
-                {stat.sub ? (
-                  <span className="text-[0.62rem] font-medium tracking-[0.1em] text-muted/80 uppercase">
-                    {stat.sub}
+              <StaggerItem key={stat.label}>
+                <div className="flex h-full flex-col gap-2 rounded-2xl bg-paper px-8 py-10 shadow-[0_20px_40px_-20px_rgba(33,28,24,0.2)]">
+                  <span className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+                    {stat.value}
                   </span>
-                ) : null}
+                  <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
+                    {stat.label}
+                  </span>
+                  {stat.sub ? (
+                    <span className="text-[0.62rem] font-medium tracking-[0.1em] text-muted/80 uppercase">
+                      {stat.sub}
+                    </span>
+                  ) : null}
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </Container>
+      </section>
+
+      {/* Our Partners */}
+      <section className="border-t border-hairline py-20 sm:py-28">
+        <Container className="flex flex-col items-center gap-12">
+          <Reveal>
+            <Eyebrow>Our Partners</Eyebrow>
+          </Reveal>
+          <Stagger className="flex flex-wrap items-center justify-center gap-x-16 gap-y-10">
+            {PARTNERS.map((partner) => (
+              <StaggerItem key={partner.name}>
+                <Image
+                  src={`/partners/${partner.file}`}
+                  alt={partner.name}
+                  width={160}
+                  height={64}
+                  className="h-10 w-auto object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0 sm:h-12"
+                />
               </StaggerItem>
             ))}
           </Stagger>
@@ -319,35 +341,23 @@ export default function AboutPage() {
           <GradientRule className="w-full" />
 
           <Reveal delay={0.1}>
-            <div className="flex flex-col items-start justify-between gap-10 sm:flex-row sm:items-center">
-              <div className="flex flex-col gap-4">
-                <h3 className="font-display text-2xl font-bold tracking-tight text-ink uppercase sm:text-3xl">
-                  Looking for a pet partner?
-                </h3>
-                <p className="max-w-sm text-sm leading-relaxed text-body">
-                  Let&apos;s explore what we can build together.
-                </p>
-                <Link
-                  href="/contact"
-                  className="group inline-flex w-fit cursor-pointer items-center gap-2 text-sm font-medium tracking-tight text-ink transition-colors hover:text-orange"
-                >
-                  Start a Conversation
-                  <ArrowUpRight
-                    size={16}
-                    className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  />
-                </Link>
-              </div>
-
-              <div className="flex shrink-0 flex-col items-center gap-2">
-                <QrCode value="https://metwiser.com/contact" className="h-24 w-24" />
-                <span className="text-[0.6rem] font-semibold tracking-[0.14em] text-muted uppercase">
-                  Scan to Connect
-                </span>
-                <span className="text-[0.62rem] tracking-wide text-muted">
-                  metwiser.com
-                </span>
-              </div>
+            <div className="flex flex-col items-center gap-4 text-center">
+              <h3 className="font-display text-2xl font-bold tracking-tight text-ink uppercase sm:text-3xl">
+                Looking for a pet partner?
+              </h3>
+              <p className="max-w-sm text-sm leading-relaxed text-body">
+                Let&apos;s explore what we can build together.
+              </p>
+              <Link
+                href="/contact"
+                className="group inline-flex w-fit cursor-pointer items-center gap-2 text-sm font-medium tracking-tight text-ink transition-colors hover:text-orange"
+              >
+                Start a Conversation
+                <ArrowUpRight
+                  size={16}
+                  className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </Link>
             </div>
           </Reveal>
         </Container>
