@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Container, Eyebrow, GradientRule } from "@/components/ui";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { ExperienceTimeline } from "@/components/sections/experience-timeline";
 import { WorldMap } from "@/components/ui/map";
 import { QrCode } from "@/components/qr-code";
 import { cn } from "@/lib/utils";
@@ -99,8 +98,9 @@ export default function AboutPage() {
               height={1000}
               className={cn(
                 "aspect-[4/5] w-full object-cover",
-                "mask-radial-[85%_75%] mask-radial-from-70% mask-radial-to-100% mask-radial-at-center",
-                "mask-t-from-80% mask-t-to-100% mask-b-from-80% mask-b-to-100%",
+                "mask-radial-[75%_65%] mask-radial-from-45% mask-radial-to-100% mask-radial-at-center",
+                "mask-t-from-50% mask-t-to-100% mask-b-from-50% mask-b-to-100%",
+                "mask-x-from-65% mask-x-to-100%",
               )}
               priority
             />
@@ -115,9 +115,9 @@ export default function AboutPage() {
             src="/about/beginning-bg.jpg"
             alt=""
             fill
-            className="object-cover"
+            className="object-cover opacity-70"
           />
-          <div className="absolute inset-0 bg-paper/88" />
+          <div className="absolute inset-0 bg-paper/10" />
         </div>
 
         <Container className="grid items-center gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
@@ -149,36 +149,57 @@ export default function AboutPage() {
       </section>
 
       {/* 03 — Experience */}
-      <section className="border-t border-hairline py-24 sm:py-32">
-        <Container className="flex flex-col gap-14">
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
-            <Reveal>
-              <h2 className="font-display max-w-md text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
-                Experience that shapes how we build.
-              </h2>
-            </Reveal>
-            <Reveal delay={0.05}>
-              <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
-                Decades of experience in building and scaling businesses have
-                shaped the way we operate today — with a focus on quality,
-                reliability, operational discipline and long-term growth.
-              </p>
-            </Reveal>
-          </div>
+      <section className="relative border-t border-hairline py-24 sm:py-32">
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <Image
+            src="/about/factory.jpg"
+            alt=""
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-paper/82" />
+        </div>
 
-          <Reveal delay={0.08}>
-            <p className="max-w-3xl text-xl leading-snug font-medium text-ink sm:text-2xl">
-              Backed by a business ecosystem generating over{" "}
-              <span className="font-display font-bold">
-                USD 5 billion
-              </span>{" "}
-              in annual turnover and hundreds of thousands of tons of
-              products each year across multiple industries.
+        <Container className="flex flex-col gap-14">
+          <Reveal>
+            <h2 className="font-display max-w-lg text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
+              Experience that shapes how we build.
+            </h2>
+          </Reveal>
+
+          <Reveal delay={0.05}>
+            <p className="max-w-lg text-[0.95rem] leading-relaxed text-body">
+              Decades of experience in building and scaling businesses have
+              shaped the way we operate today — with a focus on quality,
+              reliability, operational discipline and long-term growth.
             </p>
           </Reveal>
 
-          <Reveal delay={0.1}>
-            <ExperienceTimeline />
+          <div className="grid gap-10 border-t border-hairline pt-10 sm:grid-cols-2 sm:gap-16">
+            <Reveal delay={0.1} className="flex flex-col gap-2">
+              <span className="brand-gradient-text font-display text-6xl leading-none font-bold tracking-tight sm:text-7xl">
+                USD 5B+
+              </span>
+              <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
+                Annual ecosystem turnover
+              </span>
+            </Reveal>
+
+            <Reveal delay={0.15} className="flex flex-col gap-2">
+              <span className="font-display text-ink text-6xl leading-none font-bold tracking-tight sm:text-7xl">
+                100,000+
+              </span>
+              <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
+                Tons of products produced annually
+              </span>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.2}>
+            <p className="max-w-lg text-xs text-muted">
+              Across our broader business ecosystem, spanning multiple
+              industries.
+            </p>
           </Reveal>
         </Container>
       </section>
