@@ -28,11 +28,17 @@ const LOCATIONS = [
     description: "A growing presence in premium pet retail and distribution.",
   },
   {
-    flags: ["🇬🇧", "🇺🇸"],
-    name: "United Kingdom & United States",
+    flags: ["🇬🇧"],
+    name: "United Kingdom",
+    category: "Distribution & E-Commerce",
+    description: "Premium pet product distribution and e-commerce.",
+  },
+  {
+    flags: ["🇺🇸"],
+    name: "United States",
     category: "Distribution & E-Commerce",
     description:
-      "Premium pet products delivered through distribution and e-commerce channels.",
+      "Premium pet products through distribution and e-commerce channels.",
   },
 ];
 
@@ -50,7 +56,12 @@ const MAP_DOTS = [
 
 const GLOBAL_SCALE = [
   { value: "2022", label: "Founded", sub: "From Scratch" },
-  { value: "03", label: "International Markets", sub: "UK, US & Türkiye" },
+  {
+    value: "03",
+    label: "International Markets",
+    sub: "UK, US & Türkiye",
+    highlight: true,
+  },
   {
     value: "03",
     label: "Core Channels",
@@ -117,11 +128,18 @@ export default function AboutPage() {
       <section className="relative border-t border-hairline py-24 sm:py-32">
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <Image src="/about/beginning-bg.jpg" alt="" fill className="object-cover" />
-          <div className="absolute inset-0 bg-paper/20" />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, #ffffff 0%, #ffffff 38%, rgba(255,255,255,0) 72%)",
+            }}
+          />
         </div>
 
         <Container>
           <Reveal className="flex max-w-md flex-col gap-5">
+            <Eyebrow>2022</Eyebrow>
             <h2 className="font-display text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
               Starting from zero again.
               <br />
@@ -137,12 +155,6 @@ export default function AboutPage() {
               mindset — combining quality, operational excellence, long-term
               partnerships and a clear international vision.
             </p>
-            <div className="flex items-center gap-5 pt-2">
-              <GradientRule className="h-16 w-px shrink-0 sm:h-20" />
-              <span className="font-display text-6xl leading-none font-bold tracking-tight text-ink sm:text-7xl">
-                2022
-              </span>
-            </div>
           </Reveal>
         </Container>
       </section>
@@ -257,8 +269,8 @@ export default function AboutPage() {
       <section className="border-t border-hairline bg-[#f8f6ea] py-24 sm:py-32">
         <Container className="flex flex-col gap-14">
           <Reveal>
-            <h2 className="font-display leading-[1.05] font-bold tracking-tight text-ink uppercase">
-              <span className="block text-5xl sm:text-6xl lg:text-7xl">
+            <h2 className="font-display leading-[1.02] font-bold tracking-tight text-ink uppercase">
+              <span className="block text-6xl sm:text-7xl lg:text-8xl">
                 Metwiser
               </span>
               <span className="brand-gradient-text block text-2xl sm:text-3xl">
@@ -270,18 +282,40 @@ export default function AboutPage() {
             </h2>
           </Reveal>
 
-          <Stagger className="grid gap-6 sm:grid-cols-3">
+          <Stagger className="grid items-stretch gap-6 sm:grid-cols-3">
             {GLOBAL_SCALE.map((stat) => (
-              <StaggerItem key={stat.label}>
-                <div className="flex h-full flex-col gap-2 rounded-2xl bg-paper px-8 py-10 shadow-[0_20px_40px_-20px_rgba(33,28,24,0.2)]">
-                  <span className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+              <StaggerItem key={stat.label} className="h-full">
+                <div
+                  className={cn(
+                    "flex h-full flex-col gap-2 rounded-2xl px-8 py-10 shadow-[0_20px_40px_-20px_rgba(33,28,24,0.2)]",
+                    stat.highlight
+                      ? "brand-gradient shadow-[0_20px_40px_-20px_rgba(226,124,57,0.45)]"
+                      : "bg-paper",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "font-display text-4xl font-bold tracking-tight sm:text-5xl",
+                      stat.highlight ? "text-paper" : "text-ink",
+                    )}
+                  >
                     {stat.value}
                   </span>
-                  <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
+                  <span
+                    className={cn(
+                      "text-[0.68rem] font-semibold tracking-[0.14em] uppercase",
+                      stat.highlight ? "text-paper/85" : "text-muted",
+                    )}
+                  >
                     {stat.label}
                   </span>
                   {stat.sub ? (
-                    <span className="text-[0.62rem] font-medium tracking-[0.1em] text-muted/80 uppercase">
+                    <span
+                      className={cn(
+                        "text-[0.62rem] font-medium tracking-[0.1em] uppercase",
+                        stat.highlight ? "text-paper/70" : "text-muted/80",
+                      )}
+                    >
                       {stat.sub}
                     </span>
                   ) : null}
