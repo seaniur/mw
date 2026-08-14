@@ -1,213 +1,310 @@
 import type { Metadata } from "next";
-import { Container, Eyebrow, SectionHeading, DataRow, GradientRule } from "@/components/ui";
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { Container, Eyebrow, GradientRule } from "@/components/ui";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { AnimatedCounter } from "@/components/animated-counter";
-import { FinalCta } from "@/components/sections/final-cta";
+import { AboutHeroVisual } from "@/components/sections/about-hero-visual";
+import { ExperienceTimeline } from "@/components/sections/experience-timeline";
+import { WorldMap } from "@/components/ui/map";
+import { QrCode } from "@/components/qr-code";
 
 export const metadata: Metadata = {
   title: "About — Metwiser",
   description:
-    "Metwiser is the operating partner behind pet product lines sold in over 20 countries — spanning sourcing, manufacturing, quality, and logistics.",
+    "Built on decades of business experience, backed by a business ecosystem generating over USD 5 billion in annual turnover, and driven by a new generation with a global vision.",
 };
 
-const VALUES = [
+const LOCATIONS = [
   {
-    index: "01",
-    title: "Accountability",
-    description:
-      "One team owns the outcome end to end — no finger-pointing between vendors when something slips.",
+    country: "United Kingdom",
+    category: "Premium Distribution",
+    description: "Premium pet product distribution.",
   },
   {
-    index: "02",
-    title: "Transparency",
+    country: "United States",
+    category: "Distribution + E-Commerce",
     description:
-      "You see supplier status, quality results, and shipment timelines as they happen, not after the fact.",
+      "Premium pet products through distribution and e-commerce channels.",
   },
   {
-    index: "03",
-    title: "Speed",
+    country: "Türkiye",
+    category: "Retail + Distribution",
     description:
-      "Every process is built to compress timelines — from supplier match to shelf — without cutting corners.",
+      "A growing presence in premium pet retail and distribution.",
+    emphasis: { value: "08", label: "Active Stores" },
   },
   {
-    index: "04",
-    title: "Quality",
-    description:
-      "The same compliance bar applies whether a batch ships to one country or twenty.",
+    country: "Canada",
+    category: "Business Development",
+    description: "A platform for developing the next stage of our pet business.",
   },
 ];
 
-const PRESENCE = [
-  { value: 8, suffix: "+", label: "Years in operation" },
-  { value: 60, suffix: "+", label: "Team members" },
-  { value: 12, suffix: "", label: "Manufacturing partners" },
-  { value: 20, suffix: "+", label: "Countries served" },
+const UK = { lat: 51.5074, lng: -0.1278, label: "United Kingdom", labelSide: "top" as const };
+const USA = { lat: 40.7128, lng: -74.006, label: "United States", labelSide: "bottom" as const };
+const TURKIYE = { lat: 41.0082, lng: 28.9784, label: "Türkiye", labelSide: "bottom" as const };
+const CANADA = { lat: 43.6532, lng: -79.3832, label: "Canada", labelSide: "top" as const };
+
+const MAP_DOTS = [
+  { start: UK, end: USA },
+  { start: USA, end: TURKIYE },
+  { start: TURKIYE, end: CANADA },
+  { start: CANADA, end: UK },
 ];
 
-const LEADERSHIP = [
-  { name: "Alex Rivera", title: "Co-Founder & CEO" },
-  { name: "Jordan Lee", title: "Co-Founder & COO" },
-  { name: "Priya Nandan", title: "Head of Quality & Compliance" },
-  { name: "Marcus Webb", title: "Head of Logistics" },
+const GLOBAL_SCALE = [
+  { value: "2021", label: "Founded" },
+  { value: "08", label: "Active Pet Stores" },
+  { value: "04", label: "International Markets" },
+  { value: "03", label: "Core Channels", sub: "Distribution · Retail · E-Commerce" },
 ];
-
-function initials(name: string) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("");
-}
 
 export default function AboutPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="pt-16 pb-16 sm:pt-20 sm:pb-20">
-        <Container className="flex flex-col gap-6">
-          <Reveal>
-            <Eyebrow>About Metwiser</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <h1 className="font-display max-w-3xl text-4xl leading-[1.08] font-bold tracking-tight text-ink sm:text-5xl">
-              Built to move pet products further, faster.
-            </h1>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="max-w-2xl text-[0.95rem] leading-relaxed text-body">
-              Metwiser began as a sourcing desk for a handful of independent
-              pet brands. Today we&apos;re the operating partner behind pet
-              product lines sold in over 20 countries — without losing the
-              hands-on approach we started with.
-            </p>
+      {/* 01 — Hero */}
+      <section className="pt-16 pb-24 sm:pt-20 sm:pb-32">
+        <Container className="grid items-center gap-16 lg:grid-cols-[1.4fr_1fr] lg:gap-8">
+          <div className="flex flex-col gap-7">
+            <Reveal>
+              <Eyebrow>About Us</Eyebrow>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <h1 className="font-display text-4xl leading-[1.05] font-bold tracking-tight text-ink uppercase sm:text-5xl lg:text-6xl">
+                Built on experience.
+                <br />
+                Driven by a new
+                <br />
+                generation.
+              </h1>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
+                Founded in 2021, we began with a clear ambition: to build a
+                modern, international business in the pet industry.
+              </p>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.15} y={30} className="lg:-my-10 lg:-mr-10">
+            <AboutHeroVisual />
           </Reveal>
         </Container>
       </section>
 
-      {/* Story */}
-      <section className="border-t border-hairline py-20 sm:py-28">
-        <Container className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-          <Reveal className="flex flex-col gap-5">
-            <Eyebrow>Our story</Eyebrow>
-            <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-              Pet brands don&apos;t fail because the product is wrong.
+      {/* 02 — The New Beginning */}
+      <section className="border-t border-hairline py-24 sm:py-32">
+        <Container className="grid items-center gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
+          <Reveal className="flex flex-col gap-5 lg:order-1">
+            <h2 className="font-display text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
+              Starting from zero.
+              <br />
+              Thinking global.
             </h2>
-            <p className="text-[0.95rem] leading-relaxed text-body">
-              They fail because the supply chain behind it is slow, opaque,
-              or scattered across too many vendors. Metwiser exists to fix
-              that — a single operating layer spanning sourcing,
-              manufacturing, quality, and logistics, so pet brands can focus
-              on the product and the customer instead of managing eleven
-              different vendors in between.
+            <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
+              What started in 2021 as a new venture has grown into an
+              expanding international presence across the pet industry.
             </p>
-            <p className="text-[0.95rem] leading-relaxed text-body">
-              We work with independent pet brands and national retailers
-              alike, applying the same rigor to a first production run as we
-              do to a multi-country rollout.
+            <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
+              Built on decades of business experience and driven by a new
+              generation, we approach the pet industry with an entrepreneurial
+              mindset — combining quality, operational excellence, long-term
+              partnerships and a clear international vision.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.1} className="flex items-center gap-5 lg:order-2 lg:justify-end">
+            <GradientRule className="h-24 w-px shrink-0 sm:h-32" />
+            <span className="font-display text-[5.5rem] leading-none font-bold tracking-tight text-ink sm:text-[7rem] lg:text-[8.5rem]">
+              2021
+            </span>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* 03 — Experience */}
+      <section className="border-t border-hairline py-24 sm:py-32">
+        <Container className="flex flex-col gap-14">
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
+            <Reveal>
+              <h2 className="font-display max-w-md text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
+                Experience that shapes how we build.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
+                Decades of experience in building and scaling businesses have
+                shaped the way we operate today — with a focus on quality,
+                reliability, operational discipline and long-term growth.
+              </p>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.08}>
+            <p className="max-w-3xl text-xl leading-snug font-medium text-ink sm:text-2xl">
+              Backed by a business ecosystem generating over{" "}
+              <span className="font-display font-bold">
+                USD 5 billion
+              </span>{" "}
+              in annual turnover and hundreds of thousands of tons of
+              products each year across multiple industries.
             </p>
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="rounded-2xl border border-hairline bg-paper-soft p-8">
-              <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
-                At a glance
-              </span>
-              <GradientRule className="mt-3 mb-1" />
-              <div className="divide-y divide-hairline">
-                <DataRow label="Founded" value="2016" />
-                <DataRow label="HQ" value="San Francisco, CA" />
-                <DataRow label="Team" value="60+ specialists" />
-                <DataRow label="Markets" value="20+ countries" />
-              </div>
-            </div>
+            <ExperienceTimeline />
           </Reveal>
         </Container>
       </section>
 
-      {/* Values */}
-      <section className="border-t border-hairline bg-paper-soft py-20 sm:py-28">
+      {/* 04 — Global Footprint */}
+      <section className="border-t border-hairline py-24 sm:py-32">
         <Container className="flex flex-col gap-14">
-          <SectionHeading
-            eyebrow="What we stand for"
-            title="Four principles that don't flex under pressure."
-          />
-          <Stagger className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {VALUES.map((value) => (
-              <StaggerItem key={value.index} className="flex flex-col gap-3">
-                <span className="font-display brand-gradient-text text-2xl font-bold">
-                  {value.index}
-                </span>
-                <h3 className="font-display text-lg font-bold text-ink">
-                  {value.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-body">
-                  {value.description}
-                </p>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </Container>
-      </section>
+          <div className="flex flex-col gap-4">
+            <Reveal>
+              <Eyebrow>Global Footprint</Eyebrow>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <h2 className="font-display max-w-xl text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
+                Our global footprint
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="max-w-lg text-[0.95rem] leading-relaxed text-body">
+                From premium distribution to retail and e-commerce, our
+                presence continues to grow across key international markets.
+              </p>
+            </Reveal>
+          </div>
 
-      {/* Presence stats */}
-      <section className="py-20 sm:py-28">
-        <Container className="flex flex-col gap-14">
-          <SectionHeading
-            eyebrow="Global presence"
-            title="A team spread across the markets we serve."
-            align="center"
-          />
-          <div className="grid grid-cols-2 divide-x divide-y divide-hairline rounded-2xl border border-hairline lg:grid-cols-4 lg:divide-y-0">
-            {PRESENCE.map((stat) => (
+          <Reveal delay={0.1}>
+            <WorldMap dots={MAP_DOTS} />
+          </Reveal>
+
+          <div className="divide-y divide-hairline border-t border-hairline">
+            {LOCATIONS.map((location) => (
               <div
-                key={stat.label}
-                className="flex flex-col items-center gap-1 px-4 py-10 text-center"
+                key={location.country}
+                className="grid gap-3 py-7 sm:grid-cols-[1fr_1.4fr] sm:items-baseline sm:gap-8"
               >
-                <span className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                <span className="font-display text-xl font-bold tracking-tight text-ink sm:text-2xl">
+                  {location.country}
                 </span>
-                <span className="text-[0.68rem] font-semibold tracking-[0.12em] text-muted uppercase">
-                  {stat.label}
-                </span>
+                <div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-gold uppercase">
+                      {location.category}
+                    </span>
+                    <span className="max-w-sm text-sm leading-relaxed text-body">
+                      {location.description}
+                    </span>
+                  </div>
+                  {location.emphasis ? (
+                    <div className="flex shrink-0 items-baseline gap-2">
+                      <span className="font-display text-3xl font-bold text-ink">
+                        {location.emphasis.value}
+                      </span>
+                      <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
+                        {location.emphasis.label}
+                      </span>
+                    </div>
+                  ) : null}
+                </div>
               </div>
             ))}
           </div>
         </Container>
       </section>
 
-      {/* Leadership */}
-      <section className="border-t border-hairline bg-paper-soft py-20 sm:py-28">
+      {/* 05 — Global Scale */}
+      <section className="border-t border-hairline py-24 sm:py-32">
         <Container className="flex flex-col gap-14">
-          <SectionHeading
-            eyebrow="Leadership"
-            title="The team steering source to market."
-          />
-          <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {LEADERSHIP.map((person) => (
+          <Reveal>
+            <h2 className="font-display max-w-2xl text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
+              From one idea to a growing global presence.
+            </h2>
+          </Reveal>
+
+          <Stagger className="grid grid-cols-2 divide-x divide-y divide-hairline border-y border-hairline lg:grid-cols-4 lg:divide-y-0">
+            {GLOBAL_SCALE.map((stat) => (
               <StaggerItem
-                key={person.name}
-                className="flex flex-col items-center gap-4 rounded-2xl border border-hairline bg-paper p-7 text-center"
+                key={stat.label}
+                className="flex flex-col gap-1.5 px-2 py-10 sm:px-6"
               >
-                <span className="brand-gradient font-display inline-flex h-16 w-16 items-center justify-center rounded-full text-lg font-bold text-paper">
-                  {initials(person.name)}
+                <span className="font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+                  {stat.value}
                 </span>
-                <div className="flex flex-col gap-1">
-                  <span className="font-display text-base font-bold text-ink">
-                    {person.name}
+                <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
+                  {stat.label}
+                </span>
+                {stat.sub ? (
+                  <span className="text-[0.62rem] font-medium tracking-[0.1em] text-muted/80 uppercase">
+                    {stat.sub}
                   </span>
-                  <span className="text-[0.68rem] font-medium tracking-[0.12em] text-gold uppercase">
-                    {person.title}
-                  </span>
-                </div>
+                ) : null}
               </StaggerItem>
             ))}
           </Stagger>
         </Container>
       </section>
 
-      <FinalCta
-        title="Meet the team behind your next launch."
-        description="Whether you're validating a first product or scaling into new regions, we'll walk you through how we work."
-      />
+      {/* 06 — Vision + 07 — CTA */}
+      <section className="border-t border-hairline py-24 sm:py-32">
+        <Container className="flex flex-col gap-16">
+          <div className="flex flex-col gap-6">
+            <Reveal>
+              <Eyebrow>Our Next Chapter</Eyebrow>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <h2 className="font-display max-w-2xl text-3xl leading-[1.1] font-bold tracking-tight text-ink uppercase sm:text-4xl">
+                Building more than a pet business.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="max-w-xl text-[0.95rem] leading-relaxed text-body">
+                We are building a global platform for the pet industry —
+                connecting premium products, distribution, retail and
+                e-commerce across markets.
+              </p>
+            </Reveal>
+          </div>
+
+          <GradientRule className="w-full" />
+
+          <Reveal delay={0.1}>
+            <div className="flex flex-col items-start justify-between gap-10 sm:flex-row sm:items-center">
+              <div className="flex flex-col gap-4">
+                <h3 className="font-display text-2xl font-bold tracking-tight text-ink uppercase sm:text-3xl">
+                  Looking for a pet partner?
+                </h3>
+                <p className="max-w-sm text-sm leading-relaxed text-body">
+                  Let&apos;s explore what we can build together.
+                </p>
+                <Link
+                  href="/contact"
+                  className="group inline-flex w-fit cursor-pointer items-center gap-2 text-sm font-medium tracking-tight text-ink transition-colors hover:text-orange"
+                >
+                  Start a Conversation
+                  <ArrowUpRight
+                    size={16}
+                    className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </Link>
+              </div>
+
+              <div className="flex shrink-0 flex-col items-center gap-2">
+                <QrCode value="https://metwiser.com/contact" className="h-24 w-24" />
+                <span className="text-[0.6rem] font-semibold tracking-[0.14em] text-muted uppercase">
+                  Scan to Connect
+                </span>
+                <span className="text-[0.62rem] tracking-wide text-muted">
+                  metwiser.com
+                </span>
+              </div>
+            </div>
+          </Reveal>
+        </Container>
+      </section>
     </>
   );
 }
