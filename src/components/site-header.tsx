@@ -37,9 +37,7 @@ export function SiteHeader() {
           : "bg-transparent",
       )}
     >
-      {scrolled || open ? (
-        <div className="brand-gradient absolute inset-x-0 bottom-0 h-[2px]" />
-      ) : null}
+      <div className="brand-gradient absolute inset-x-0 bottom-0 h-[2px]" />
       <Container className="flex h-18 items-center justify-between py-4">
         <Link href="/" className="shrink-0">
           <Logo />

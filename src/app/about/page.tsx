@@ -116,39 +116,33 @@ export default function AboutPage() {
       {/* 02 — The New Beginning */}
       <section className="relative border-t border-hairline py-24 sm:py-32">
         <div className="absolute inset-0 -z-10 overflow-hidden">
-          <Image
-            src="/about/beginning-bg.jpg"
-            alt=""
-            fill
-            className="object-cover opacity-70"
-          />
-          <div className="absolute inset-0 bg-paper/10" />
+          <Image src="/about/beginning-bg.jpg" alt="" fill className="object-cover" />
+          <div className="absolute inset-0 bg-paper/20" />
         </div>
 
-        <Container className="grid items-center gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
-          <Reveal className="flex flex-col gap-5 lg:order-1">
+        <Container>
+          <Reveal className="flex max-w-md flex-col gap-5">
             <h2 className="font-display text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
               Starting from zero again.
               <br />
               Thinking global.
             </h2>
-            <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
+            <p className="text-[0.95rem] leading-relaxed text-body">
               What started in 2022 as a new venture has grown into an
               expanding international presence across the pet industry.
             </p>
-            <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
+            <p className="text-[0.95rem] leading-relaxed text-body">
               Built on decades of business experience and driven by a new
               generation, we approach the pet industry with an entrepreneurial
               mindset — combining quality, operational excellence, long-term
               partnerships and a clear international vision.
             </p>
-          </Reveal>
-
-          <Reveal delay={0.1} className="flex items-center gap-5 lg:order-2 lg:justify-end">
-            <GradientRule className="h-24 w-px shrink-0 sm:h-32" />
-            <span className="font-display text-[5.5rem] leading-none font-bold tracking-tight text-ink sm:text-[7rem] lg:text-[8.5rem]">
-              2022
-            </span>
+            <div className="flex items-center gap-5 pt-2">
+              <GradientRule className="h-16 w-px shrink-0 sm:h-20" />
+              <span className="font-display text-6xl leading-none font-bold tracking-tight text-ink sm:text-7xl">
+                2022
+              </span>
+            </div>
           </Reveal>
         </Container>
       </section>
@@ -177,21 +171,21 @@ export default function AboutPage() {
             </p>
           </Reveal>
 
-          <div className="grid w-full max-w-2xl gap-6 sm:grid-cols-2">
-            <Reveal delay={0.1}>
-              <div className="flex flex-col items-center gap-2 rounded-2xl bg-paper px-8 py-10 shadow-[0_20px_40px_-20px_rgba(33,28,24,0.25)]">
-                <span className="brand-gradient-text font-display text-5xl leading-none font-bold tracking-tight sm:text-6xl">
-                  <AnimatedCounter value={5} prefix="USD " suffix="B+" />
+          <div className="grid w-full max-w-2xl items-stretch gap-6 sm:grid-cols-2">
+            <Reveal delay={0.1} className="h-full">
+              <div className="brand-gradient flex h-full flex-col items-center justify-center gap-2 rounded-2xl px-8 py-10 shadow-[0_20px_40px_-20px_rgba(226,124,57,0.45)]">
+                <span className="font-display text-5xl leading-none font-bold tracking-tight text-paper sm:text-6xl">
+                  <AnimatedCounter value={5000} prefix="$" suffix="M+" format />
                 </span>
-                <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
+                <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-paper/85 uppercase">
                   Annual ecosystem turnover
                 </span>
               </div>
             </Reveal>
 
-            <Reveal delay={0.15}>
-              <div className="flex flex-col items-center gap-2 rounded-2xl bg-paper px-8 py-10 shadow-[0_20px_40px_-20px_rgba(33,28,24,0.25)]">
-                <span className="font-display text-6xl leading-none font-bold tracking-tight text-ink sm:text-6xl">
+            <Reveal delay={0.15} className="h-full">
+              <div className="flex h-full flex-col items-center justify-center gap-2 rounded-2xl bg-paper px-8 py-10 shadow-[0_20px_40px_-20px_rgba(33,28,24,0.25)]">
+                <span className="font-display text-5xl leading-none font-bold tracking-tight text-ink sm:text-6xl">
                   <AnimatedCounter value={100000} suffix="+" format />
                 </span>
                 <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
@@ -212,55 +206,50 @@ export default function AboutPage() {
 
       {/* 04 — Global Footprint */}
       <section className="border-t border-hairline py-24 sm:py-32">
-        <Container>
-          <div className="grid gap-14 lg:grid-cols-2 lg:gap-12">
-            <div className="flex flex-col gap-10">
-              <div className="flex flex-col gap-4">
-                <Reveal>
-                  <Eyebrow>Global Footprint</Eyebrow>
-                </Reveal>
-                <Reveal delay={0.05}>
-                  <h2 className="font-display max-w-xl text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
-                    Our global footprint
-                  </h2>
-                </Reveal>
-                <Reveal delay={0.1}>
-                  <p className="max-w-lg text-[0.95rem] leading-relaxed text-body">
-                    From premium distribution to retail and e-commerce, our
-                    presence continues to grow across key international
-                    markets.
-                  </p>
-                </Reveal>
-              </div>
-
-              <Reveal delay={0.1}>
-                <div className="divide-y divide-hairline border-t border-hairline">
-                  {LOCATIONS.map((location) => (
-                    <div key={location.name} className="flex flex-col gap-2 py-7">
-                      <div className="flex items-center gap-2.5">
-                        <span className="text-xl leading-none">
-                          {location.flags.join(" ")}
-                        </span>
-                        <span className="font-display text-lg font-bold tracking-tight text-ink sm:text-xl">
-                          {location.name}
-                        </span>
-                      </div>
-                      <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-gold uppercase">
-                        {location.category}
-                      </span>
-                      <span className="max-w-sm text-sm leading-relaxed text-body">
-                        {location.description}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
-            </div>
-
-            <Reveal delay={0.15} className="lg:sticky lg:top-28 lg:self-start">
-              <WorldMap dots={MAP_DOTS} />
+        <Container className="flex flex-col items-center gap-14 text-center">
+          <div className="flex flex-col items-center gap-4">
+            <Reveal>
+              <Eyebrow>Global Footprint</Eyebrow>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <h2 className="font-display max-w-xl text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
+                Our global footprint
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="max-w-lg text-[0.95rem] leading-relaxed text-body">
+                From premium distribution to retail and e-commerce, our
+                presence continues to grow across key international markets.
+              </p>
             </Reveal>
           </div>
+
+          <Reveal delay={0.1} className="w-full max-w-2xl">
+            <WorldMap dots={MAP_DOTS} />
+          </Reveal>
+
+          <Stagger className="grid w-full gap-6 sm:grid-cols-2">
+            {LOCATIONS.map((location) => (
+              <StaggerItem key={location.name}>
+                <div className="flex h-full flex-col items-center gap-2 rounded-2xl bg-paper px-8 py-10 text-center shadow-[0_20px_40px_-20px_rgba(33,28,24,0.2)]">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-xl leading-none">
+                      {location.flags.join(" ")}
+                    </span>
+                    <span className="font-display text-lg font-bold tracking-tight text-ink sm:text-xl">
+                      {location.name}
+                    </span>
+                  </div>
+                  <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-gold uppercase">
+                    {location.category}
+                  </span>
+                  <span className="max-w-sm text-sm leading-relaxed text-body">
+                    {location.description}
+                  </span>
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </Container>
       </section>
 
@@ -268,8 +257,16 @@ export default function AboutPage() {
       <section className="border-t border-hairline bg-[#f8f6ea] py-24 sm:py-32">
         <Container className="flex flex-col gap-14">
           <Reveal>
-            <h2 className="font-display max-w-2xl text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
-              Metwiser — from one idea to a growing global presence.
+            <h2 className="font-display leading-[1.05] font-bold tracking-tight text-ink uppercase">
+              <span className="block text-5xl sm:text-6xl lg:text-7xl">
+                Metwiser
+              </span>
+              <span className="brand-gradient-text block text-2xl sm:text-3xl">
+                From one idea
+              </span>
+              <span className="block text-2xl sm:text-3xl">
+                to a growing global presence.
+              </span>
             </h2>
           </Reveal>
 
