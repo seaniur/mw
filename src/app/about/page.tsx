@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Container, Eyebrow, GradientRule } from "@/components/ui";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { AboutHeroVisual } from "@/components/sections/about-hero-visual";
 import { ExperienceTimeline } from "@/components/sections/experience-timeline";
 import { WorldMap } from "@/components/ui/map";
 import { QrCode } from "@/components/qr-code";
@@ -87,7 +87,14 @@ export default function AboutPage() {
           </div>
 
           <Reveal delay={0.15} y={30} className="lg:-my-10 lg:-mr-10">
-            <AboutHeroVisual />
+            <Image
+              src="/about/hero.jpg"
+              alt="A Golden Retriever and a cat moving through a contemporary architectural space"
+              width={800}
+              height={1000}
+              className="aspect-[4/5] w-full object-cover"
+              priority
+            />
           </Reveal>
         </Container>
       </section>
