@@ -14,7 +14,7 @@ import { FinalCta } from "@/components/sections/final-cta";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Services — Metwiser",
+  title: "Services | Metwiser",
   description:
     "Sourcing, manufacturing, R&D, quality, packaging, and logistics services for pet brands and retailers, delivered by one accountable partner.",
 };
@@ -33,7 +33,7 @@ const SERVICES: Service[] = [
     index: "01",
     title: "Sourcing & Supplier Network",
     description:
-      "Access a pre-vetted network of pet food and pet care manufacturers, matched to your product spec, volume, and budget — without running your own supplier search from scratch.",
+      "Access a pre-vetted network of pet food and pet care manufacturers, matched to your product spec, volume, and budget, without running your own supplier search from scratch.",
     capabilities: [
       "Pre-vetted manufacturer network across 12+ facilities",
       "Supplier audits and capability matching",
@@ -72,7 +72,7 @@ const SERVICES: Service[] = [
     index: "04",
     title: "Quality & Compliance",
     description:
-      "Every batch is held to the same bar, whether it ships to one country or twenty — with documentation ready before regulators ask.",
+      "Every batch is held to the same bar, whether it ships to one country or twenty, with documentation ready before regulators ask.",
     capabilities: [
       "Batch-level lab testing and certificates of analysis",
       "Facility audits against food-safety standards",
@@ -98,7 +98,7 @@ const SERVICES: Service[] = [
     index: "06",
     title: "Logistics & Fulfillment",
     description:
-      "Freight, customs, warehousing, and fulfillment — coordinated so product moves from factory floor to retail shelf without gaps in visibility.",
+      "Freight, customs, warehousing, and fulfillment, coordinated so product moves from factory floor to retail shelf without gaps in visibility.",
     capabilities: [
       "Freight, customs, and duties coordination",
       "Warehousing and inventory management",
@@ -124,7 +124,7 @@ export default function ServicesPage() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="max-w-2xl text-[0.95rem] leading-relaxed text-body">
-              Every engagement draws from the same six capabilities — mixed
+              Every engagement draws from the same six capabilities, mixed
               and matched to where you are today, from first production run
               to multi-country distribution.
             </p>
@@ -190,7 +190,7 @@ export default function ServicesPage() {
 
       <FinalCta
         title="Not sure which service you need?"
-        description="Tell us about your product and timeline — we'll recommend the right starting point across sourcing, manufacturing, or logistics."
+        description="Tell us about your product and timeline. We'll recommend the right starting point across sourcing, manufacturing, or logistics."
         buttonLabel="Talk to Our Team"
       />
     </>

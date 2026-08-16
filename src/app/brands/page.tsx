@@ -6,9 +6,9 @@ import { Container, Eyebrow } from "@/components/ui";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 export const metadata: Metadata = {
-  title: "Brands — Metwiser",
+  title: "Brands | Metwiser",
   description:
-    "The brands under the Metwiser umbrella — Catz and Dogz, Pawfect, and the soon-to-launch Petwiser.",
+    "The brands under the Metwiser umbrella: Catz and Dogz, Pawfect, and the soon-to-launch Petwiser.",
 };
 
 const PAWFECT_CATEGORIES = [
@@ -50,7 +50,13 @@ export default function BrandsPage() {
       {/* Hero */}
       <section className="relative py-24 sm:py-32">
         <div className="absolute inset-0 -z-10 overflow-hidden">
-          <Image src="/brands/hero.jpg" alt="" fill className="object-cover" priority />
+          <Image
+            src="/brands/hero.jpg"
+            alt=""
+            fill
+            className="object-cover object-[center_62%]"
+            priority
+          />
           <div className="absolute inset-0 bg-paper/20" />
         </div>
 
@@ -73,12 +79,15 @@ export default function BrandsPage() {
       <section className="border-t border-hairline py-20 sm:py-28">
         <Container className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal className="overflow-hidden rounded-2xl">
-            <Image
-              src="/brands/catz-and-dogz-photo.jpg"
-              alt="A Catz and Dogz retail store"
-              width={900}
-              height={1000}
+            <video
+              src="/brands/catz-and-dogz-video.mp4"
+              poster="/brands/catz-and-dogz-photo.jpg"
               className="aspect-[4/5] w-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
             />
           </Reveal>
 
@@ -95,7 +104,7 @@ export default function BrandsPage() {
             </h2>
             <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
               A growing chain of pet stores across Türkiye, bringing premium
-              pet products directly into local communities — with a new
+              pet products directly into local communities, with a new
               branch opening on a regular basis.
             </p>
             <div className="flex items-center gap-5 pt-2">
@@ -107,10 +116,22 @@ export default function BrandsPage() {
                   Active Branches
                 </span>
                 <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-gold uppercase">
-                  🇹🇷 Türkiye — Still Expanding
+                  🇹🇷 Türkiye · Still Expanding
                 </span>
               </div>
             </div>
+            <Link
+              href="https://catz-dogz.com/"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="group inline-flex w-fit cursor-pointer items-center gap-2 text-sm font-medium tracking-tight text-ink transition-colors hover:text-orange"
+            >
+              Visit catz-dogz.com
+              <ArrowUpRight
+                size={16}
+                className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </Link>
           </Reveal>
         </Container>
       </section>
@@ -134,7 +155,7 @@ export default function BrandsPage() {
             <p className="text-[0.95rem] leading-relaxed text-body">
               The Pawfect range consists of various natural snacks to pamper
               pets. From freeze-dried fruit to crunchy cheese treats and from
-              a cheesy chew to freeze-dried meat — there is something
+              a cheesy chew to freeze-dried meat, there is something
               delicious and nutritious for every dog and cat.
             </p>
           </Reveal>
@@ -159,7 +180,7 @@ export default function BrandsPage() {
 
       {/* Petwiser */}
       <section className="border-t border-hairline py-16 sm:py-20">
-        <Container className="flex flex-col gap-3">
+        <Container className="flex flex-col items-center gap-3 text-center">
           <Reveal>
             <Eyebrow>Coming Soon</Eyebrow>
           </Reveal>
@@ -171,8 +192,17 @@ export default function BrandsPage() {
           <Reveal delay={0.1}>
             <p className="max-w-md text-[0.95rem] leading-relaxed text-body">
               A new brand for people who truly care about their pet&apos;s
-              diet — launching soon.
+              diet. Launching soon.
             </p>
+          </Reveal>
+          <Reveal delay={0.15} className="mt-6 w-full max-w-2xl">
+            <Image
+              src="/brands/petwiser-product-range.jpg"
+              alt="A preview of the Petwiser product range"
+              width={900}
+              height={600}
+              className="w-full rounded-2xl object-cover"
+            />
           </Reveal>
         </Container>
       </section>

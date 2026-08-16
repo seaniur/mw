@@ -64,7 +64,7 @@ export function ContactForm() {
           Message received
         </h3>
         <p className="max-w-xs text-sm leading-relaxed text-body">
-          Thanks for reaching out — our team will follow up within one
+          Thanks for reaching out. Our team will follow up within one
           business day.
         </p>
       </motion.div>

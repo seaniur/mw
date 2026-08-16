@@ -4,12 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { Container, Eyebrow, GradientRule } from "@/components/ui";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { AnimatedCounter } from "@/components/animated-counter";
 import { WorldMap } from "@/components/ui/map";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "About — Metwiser",
+  title: "About | Metwiser",
   description:
     "Built on decades of business experience, backed by a business ecosystem generating over USD 5 billion in annual turnover, and driven by a new generation with a global vision.",
 };
@@ -87,13 +86,13 @@ export default function AboutPage() {
             <Reveal delay={0.05}>
               <h1 className="font-display leading-[1.05] font-bold tracking-tight text-ink uppercase">
                 <span className="block text-4xl sm:text-5xl lg:text-6xl">
-                  Built on experience.
-                </span>
-                <span className="block text-4xl sm:text-5xl lg:text-6xl">
-                  Driven by a
+                  Built on
                 </span>
                 <span className="brand-gradient-text block text-5xl sm:text-6xl lg:text-7xl">
-                  new generation.
+                  +40 years
+                </span>
+                <span className="block text-4xl sm:text-5xl lg:text-6xl">
+                  of successful business.
                 </span>
               </h1>
             </Reveal>
@@ -140,9 +139,9 @@ export default function AboutPage() {
           <Reveal className="flex max-w-md flex-col gap-5">
             <Eyebrow>2022</Eyebrow>
             <h2 className="font-display text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
-              Starting from zero again.
+              Starting a pet business.
               <br />
-              Thinking global.
+              With a global mindset.
             </h2>
             <p className="text-[0.95rem] leading-relaxed text-body">
               What started in 2022 as a new venture has grown into an
@@ -151,65 +150,8 @@ export default function AboutPage() {
             <p className="text-[0.95rem] leading-relaxed text-body">
               Built on decades of business experience and driven by a new
               generation, we approach the pet industry with an entrepreneurial
-              mindset — combining quality, operational excellence, long-term
+              mindset, combining quality, operational excellence, long-term
               partnerships and a clear international vision.
-            </p>
-          </Reveal>
-        </Container>
-      </section>
-
-      {/* 03 — Experience */}
-      <section className="relative border-t border-hairline py-16 sm:py-20">
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <Image
-            src="/about/factory.jpg"
-            alt=""
-            fill
-            className="scale-105 object-cover opacity-50 blur-[2px]"
-          />
-          <div className="absolute inset-0 bg-paper/88" />
-        </div>
-
-        <Container className="flex flex-col items-center gap-10 text-center">
-          <Reveal className="flex flex-col items-center gap-5">
-            <h2 className="font-display max-w-lg text-2xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-3xl">
-              Experience that shapes how we build.
-            </h2>
-            <p className="max-w-lg text-[0.95rem] leading-relaxed text-body">
-              Decades of experience in building and scaling businesses have
-              shaped the way we operate today — with a focus on quality,
-              reliability, operational discipline and long-term growth.
-            </p>
-          </Reveal>
-
-          <div className="grid w-full max-w-2xl items-stretch gap-6 sm:grid-cols-2">
-            <Reveal delay={0.1} className="h-full">
-              <div className="brand-gradient flex h-full flex-col items-center justify-center gap-2 rounded-2xl px-8 py-10 shadow-[0_20px_40px_-20px_rgba(226,124,57,0.45)]">
-                <span className="font-display text-5xl leading-none font-bold tracking-tight text-paper sm:text-6xl">
-                  <AnimatedCounter value={5000} prefix="$" suffix="M+" format />
-                </span>
-                <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-paper/85 uppercase">
-                  Annual ecosystem turnover
-                </span>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.15} className="h-full">
-              <div className="flex h-full flex-col items-center justify-center gap-2 rounded-2xl bg-paper px-8 py-10 shadow-[0_20px_40px_-20px_rgba(33,28,24,0.25)]">
-                <span className="font-display text-5xl leading-none font-bold tracking-tight text-ink sm:text-6xl">
-                  <AnimatedCounter value={100000} suffix="+" format />
-                </span>
-                <span className="text-[0.68rem] font-semibold tracking-[0.14em] text-muted uppercase">
-                  Tons of products produced annually
-                </span>
-              </div>
-            </Reveal>
-          </div>
-
-          <Reveal delay={0.2}>
-            <p className="max-w-lg text-xs text-muted">
-              Across our broader business ecosystem, spanning multiple
-              industries.
             </p>
           </Reveal>
         </Container>
@@ -361,7 +303,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="max-w-xl text-[0.95rem] leading-relaxed text-body">
-                We are building a global platform for the pet industry —
+                We are building a global platform for the pet industry,
                 connecting premium products, distribution, retail and
                 e-commerce across markets.
               </p>

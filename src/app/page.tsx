@@ -32,7 +32,7 @@ const PROCESS = [
     index: "02",
     title: "Formulate & Manufacture",
     description:
-      "Our team manages formulation, private label production, and packaging — with full transparency at every stage.",
+      "Our team manages formulation, private label production, and packaging, with full transparency at every stage.",
   },
   {
     index: "03",
@@ -92,7 +92,7 @@ const VALUES = [
     icon: Zap,
     title: "Speed to market",
     description:
-      "One accountable team managing sourcing, production, and delivery — so timelines don't slip between vendors.",
+      "One accountable team managing sourcing, production, and delivery, so timelines don't slip between vendors.",
   },
 ];
 
@@ -116,7 +116,7 @@ export default function Home() {
             <Reveal delay={0.1}>
               <p className="max-w-lg text-[0.95rem] leading-relaxed text-body">
                 Metwiser sources, manufactures, and delivers pet food and pet
-                care products for brands and retailers in 20+ countries — one
+                care products for brands and retailers in 20+ countries, one
                 accountable partner across the entire supply chain.
               </p>
             </Reveal>
@@ -294,7 +294,7 @@ export default function Home() {
 
       <FinalCta
         title="Let's build your pet product pipeline."
-        description="Tell us what you're sourcing or manufacturing — we'll map the fastest accountable path from source to market."
+        description="Tell us what you're sourcing or manufacturing. We'll map the fastest accountable path from source to market."
       />
     </>
   );

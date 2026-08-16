@@ -18,7 +18,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Metwiser — Pet Solutions, From Source to Market",
+  title: "Metwiser | Pet Solutions, From Source to Market",
   description:
     "Metwiser is a global pet partner sourcing, manufacturing, and delivering pet products for brands and retailers worldwide.",
 };

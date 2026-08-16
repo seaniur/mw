@@ -44,10 +44,12 @@ export function DataRow({
   label,
   value,
   href,
+  trailing,
 }: {
   label: string;
   value: string;
   href?: string;
+  trailing?: ReactNode;
 }) {
   const valueEl = href ? (
     <Link href={href} className="hover:text-orange transition-colors">
@@ -64,6 +66,7 @@ export function DataRow({
         {label}
       </span>
       <span className="text-sm text-ink">{valueEl}</span>
+      {trailing}
     </div>
   );
 }

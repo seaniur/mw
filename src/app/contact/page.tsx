@@ -3,9 +3,10 @@ import { Clock } from "lucide-react";
 import { Container, Eyebrow, DataRow, GradientRule } from "@/components/ui";
 import { Reveal } from "@/components/motion";
 import { ContactForm } from "@/components/contact-form";
+import { WhatsAppLink } from "@/components/whatsapp-link";
 
 export const metadata: Metadata = {
-  title: "Contact — Metwiser",
+  title: "Contact | Metwiser",
   description:
     "Get in touch with the Metwiser team to start sourcing, manufacturing, or shipping your pet product line.",
 };
@@ -50,14 +51,18 @@ export default function ContactPage() {
               </span>
               <GradientRule className="mt-3 mb-1" />
               <div className="divide-y divide-hairline">
-                <DataRow label="Tel" value="+1 (415) 555-0148" href="tel:+14155550148" />
+                <DataRow
+                  label="Tel"
+                  value="+90 537 503 14 93"
+                  href="tel:+905375031493"
+                  trailing={<WhatsAppLink phone="905375031493" />}
+                />
                 <DataRow
                   label="Email"
                   value="hello@metwiser.com"
                   href="mailto:hello@metwiser.com"
                 />
-                <DataRow label="HQ" value="San Francisco, CA" />
-                <DataRow label="Web" value="metwiser.com" />
+                <DataRow label="HQ" value="Istanbul, Türkiye" />
               </div>
             </div>
 
