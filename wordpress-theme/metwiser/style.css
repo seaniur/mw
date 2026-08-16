@@ -1,0 +1,16 @@
+/*
+Theme Name: Metwiser
+Theme URI: https://metwiser.com
+Author: Metwiser
+Author URI: https://metwiser.com
+Description: Marketing theme for Metwiser, a global pet industry partner for sourcing, manufacturing, and delivering pet products. Ported from the Metwiser Next.js site. Content is hardcoded in the page templates; edit the template-parts and page-*.php files to change copy.
+Version: 1.0.0
+Requires at least: 6.0
+Requires PHP: 7.4
+License: Unlicensed (private)
+Text Domain: metwiser
+*/
+
+/* This file intentionally only carries the theme header WordPress requires.
+   All actual styling lives in assets/css/main.css (compiled Tailwind),
+   enqueued from functions.php. */
