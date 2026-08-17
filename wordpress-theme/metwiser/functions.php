@@ -137,6 +137,73 @@ add_action('wp_ajax_metwiser_contact_form', 'metwiser_handle_contact_form');
 add_action('wp_ajax_nopriv_metwiser_contact_form', 'metwiser_handle_contact_form');
 
 /**
+ * The four Pages the theme's dedicated templates (page-about.php etc.)
+ * are keyed to via WordPress's page-{slug}.php template hierarchy.
+ * Without a Page at these slugs, WordPress has nothing to route
+ * /about/, /services/, /brands/, /contact/ to and those URLs 404 even
+ * though the template file exists.
+ */
+function metwiser_required_pages(): array
+{
+    return [
+        'about' => 'About',
+        'services' => 'Services',
+        'brands' => 'Brands',
+        'contact' => 'Contact',
+    ];
+}
+
+function metwiser_create_missing_pages(): void
+{
+    foreach (metwiser_required_pages() as $slug => $title) {
+        if (get_page_by_path($slug)) {
+            continue;
+        }
+        wp_insert_post([
+            'post_title' => $title,
+            'post_name' => $slug,
+            'post_status' => 'publish',
+            'post_type' => 'page',
+        ]);
+    }
+}
+
+/**
+ * Runs once on theme activation: creates any of the four required Pages
+ * that don't already exist, and switches "Plain" permalinks
+ * (WordPress's default on a fresh install) to pretty permalinks, since
+ * the nav and every internal link assume /about/-style URLs. Leaves any
+ * already-configured custom permalink structure alone.
+ */
+function metwiser_on_activate(): void
+{
+    if (!get_option('permalink_structure')) {
+        update_option('permalink_structure', '/%postname%/');
+    }
+    metwiser_create_missing_pages();
+    flush_rewrite_rules();
+    update_option('metwiser_pages_checked', 1);
+}
+add_action('after_switch_theme', 'metwiser_on_activate');
+
+/**
+ * Self-heals installs that activated an older copy of this theme before
+ * the block above existed (or had a required page later trashed) by
+ * running the same check once from wp-admin, without needing a
+ * deactivate/reactivate cycle.
+ */
+function metwiser_ensure_required_pages(): void
+{
+    if (get_option('metwiser_pages_checked')) {
+        return;
+    }
+    metwiser_create_missing_pages();
+    flush_rewrite_rules();
+    update_option('metwiser_pages_checked', 1);
+}
+add_action('admin_init', 'metwiser_ensure_required_pages');
+
+/**
  * Falls back to the theme's bundled favicon when no WordPress Site Icon
  * has been set under Settings -> General.
  */

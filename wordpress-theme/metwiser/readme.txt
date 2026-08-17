@@ -11,15 +11,17 @@ wp-admin — edit the .php files listed below to change anything.
    (Or upload the folder directly to wp-content/themes/ over FTP/cPanel
    File Manager, then activate it from Appearance -> Themes.)
 
-2. Create four WordPress Pages (Pages -> Add New) with these exact
-   slugs — the theme picks up its custom layout automatically per
-   WordPress's page-{slug}.php template convention, so page content/body
-   can be left empty:
-     - about     (title "About")
-     - services  (title "Services")
-     - brands    (title "Brands")
-     - contact   (title "Contact")
-   The homepage needs no page at all — front-page.php always renders it.
+2. On activation the theme automatically creates the four Pages it
+   needs (About, Services, Brands, Contact, at slugs about/services/
+   brands/contact) and switches "Plain" permalinks to pretty ones if
+   your install was still on the WordPress default — the nav and every
+   internal link assume /about/-style URLs. You don't need to create
+   these Pages yourself; leave their content empty, the templates do
+   all the rendering.
+
+   If you installed an earlier copy of this theme before this existed,
+   just visit wp-admin once (Pages -> All Pages) and any missing page
+   will be created automatically — no need to deactivate/reactivate.
 
 3. That's it. No build step, no Node.js, no Composer — this is a plain
    PHP + compiled CSS + vanilla JS theme that runs on any standard
