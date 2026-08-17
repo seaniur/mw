@@ -589,6 +589,12 @@
   .h-\[2px\] {
     height: 2px;
   }
+  .h-\[3\.25rem\] {
+    height: 3.25rem;
+  }
+  .h-\[5\.2rem\] {
+    height: 5.2rem;
+  }
   .h-\[500px\] {
     height: 500px;
   }
@@ -654,6 +660,9 @@
   }
   .w-\[1\.2rem\] {
     width: 1.2rem;
+  }
+  .w-\[5\.2rem\] {
+    width: 5.2rem;
   }
   .w-\[180px\] {
     width: 180px;
@@ -964,6 +973,9 @@
   }
   :where(.divide-hairline > :not(:last-child)) {
     border-color: #e7e1d9;
+  }
+  .self-start {
+    align-self: flex-start;
   }
   .truncate {
     overflow: hidden;
@@ -2114,8 +2126,11 @@
     .sm\:h-20 {
       height: calc(var(--spacing) * 20);
     }
-    .sm\:w-20 {
-      width: calc(var(--spacing) * 20);
+    .sm\:h-\[6\.5rem\] {
+      height: 6.5rem;
+    }
+    .sm\:w-\[6\.5rem\] {
+      width: 6.5rem;
     }
     .sm\:w-auto {
       width: auto;

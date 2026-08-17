@@ -55,13 +55,13 @@ $pawfect_categories = [
             ></video>
         </div>
 
-        <div class="reveal flex flex-col gap-6" style="--reveal-delay:0.1s">
+        <div class="reveal flex flex-col items-start gap-6" style="--reveal-delay:0.1s">
             <img
                 src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/brands/catz-and-dogz-logo.png'); ?>"
                 alt="Catz and Dogz"
                 width="200"
                 height="64"
-                class="h-10 w-auto object-contain"
+                class="h-[3.25rem] w-auto self-start object-contain"
             >
             <h2 class="font-display text-3xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-4xl">Catz and Dogz</h2>
             <p class="max-w-md text-[0.95rem] leading-relaxed text-body">
@@ -91,7 +91,7 @@ $pawfect_categories = [
                     alt="Pawfect"
                     width="120"
                     height="120"
-                    class="h-16 w-16 object-contain sm:h-20 sm:w-20"
+                    class="h-[5.2rem] w-[5.2rem] object-contain sm:h-[6.5rem] sm:w-[6.5rem]"
                 >
                 <h2 class="font-display text-3xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-4xl">Pawfect</h2>
             </div>

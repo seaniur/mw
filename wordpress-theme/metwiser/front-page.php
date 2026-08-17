@@ -36,6 +36,11 @@ $values = [
 
 <!-- Hero -->
 <section class="relative overflow-hidden pt-16 pb-20 sm:pt-20 sm:pb-28">
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/home/hero-bg.jpg'); ?>" alt="" class="h-full w-full object-cover">
+        <div class="absolute inset-0 bg-paper/85"></div>
+    </div>
+
     <div class="mx-auto grid w-full max-w-6xl items-center gap-14 px-6 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
         <div class="flex flex-col gap-6">
             <div class="reveal"><?php metwiser_eyebrow('Global Pet Partner'); ?></div>

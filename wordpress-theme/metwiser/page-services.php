@@ -45,7 +45,12 @@ $services = [
 ?>
 
 <!-- Hero -->
-<section class="pt-16 pb-16 sm:pt-20 sm:pb-20">
+<section class="relative overflow-hidden pt-16 pb-16 sm:pt-20 sm:pb-20">
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/services/hero-bg.jpg'); ?>" alt="" class="h-full w-full object-cover">
+        <div class="absolute inset-0 bg-paper/85"></div>
+    </div>
+
     <div class="mx-auto flex w-full max-w-6xl flex-col gap-6 px-6 sm:px-8">
         <div class="reveal"><?php metwiser_eyebrow('Services'); ?></div>
         <div class="reveal" style="--reveal-delay:0.05s">

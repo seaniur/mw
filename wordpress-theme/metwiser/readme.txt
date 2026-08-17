@@ -27,16 +27,21 @@ wp-admin — edit the .php files listed below to change anything.
    PHP + compiled CSS + vanilla JS theme that runs on any standard
    WordPress/PHP host, including shared cPanel hosting.
 
-== Still-missing brand assets ==
+== Still-missing images ==
 
-These files are referenced by the Brands page but aren't included yet
-(same as the live site) — upload them into
-wp-content/themes/metwiser/assets/images/brands/ with these exact
-filenames and they'll appear automatically:
-  - catz-and-dogz-photo.jpg   (poster frame behind the video before it loads)
-  - catz-and-dogz-video.mp4   (H.264 MP4, ideally under ~10-15MB)
-  - catz-and-dogz-logo.png
-  - petwiser-product-range.jpg
+These files are referenced by the templates but aren't included yet —
+upload them with these exact filenames and they'll appear
+automatically, no code changes needed:
+
+  wp-content/themes/metwiser/assets/images/brands/
+    - catz-and-dogz-photo.jpg   (poster frame behind the video before it loads)
+    - petwiser-product-range.jpg
+
+  wp-content/themes/metwiser/assets/images/home/
+    - hero-bg.jpg   (homepage hero section background)
+
+  wp-content/themes/metwiser/assets/images/services/
+    - hero-bg.jpg   (services page hero section background)
 
 == Contact form ==
 

@@ -223,9 +223,9 @@ function metwiser_nav_links()
 {
     return [
         ['href' => home_url('/'), 'label' => 'Home'],
-        ['href' => home_url('/about/'), 'label' => 'About'],
-        ['href' => home_url('/services/'), 'label' => 'Services'],
         ['href' => home_url('/brands/'), 'label' => 'Brands'],
+        ['href' => home_url('/services/'), 'label' => 'Services'],
+        ['href' => home_url('/about/'), 'label' => 'About'],
         ['href' => home_url('/contact/'), 'label' => 'Contact'],
     ];
 }
