@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowUpRight,
   Factory,
@@ -101,6 +102,11 @@ export default function Home() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden pt-16 pb-20 sm:pt-20 sm:pb-28">
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <Image src="/home/hero-bg.jpg" alt="" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-paper/85" />
+        </div>
+
         <Container className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
           <div className="flex flex-col gap-6">
             <Reveal>

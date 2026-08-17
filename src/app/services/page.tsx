@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   Boxes,
   Factory,
@@ -112,7 +113,12 @@ export default function ServicesPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-16 pb-16 sm:pt-20 sm:pb-20">
+      <section className="relative overflow-hidden pt-16 pb-16 sm:pt-20 sm:pb-20">
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <Image src="/services/hero-bg.jpg" alt="" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-paper/85" />
+        </div>
+
         <Container className="flex flex-col gap-6">
           <Reveal>
             <Eyebrow>Services</Eyebrow>

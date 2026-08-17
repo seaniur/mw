@@ -5,9 +5,9 @@ import { WhatsAppLink } from "@/components/whatsapp-link";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
   { href: "/brands", label: "Brands" },
+  { href: "/services", label: "Services" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 

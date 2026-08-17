@@ -91,13 +91,13 @@ export default function BrandsPage() {
             />
           </Reveal>
 
-          <Reveal delay={0.1} className="flex flex-col gap-6">
+          <Reveal delay={0.1} className="flex flex-col items-start gap-6">
             <Image
               src="/brands/catz-and-dogz-logo.png"
               alt="Catz and Dogz"
               width={200}
               height={64}
-              className="h-10 w-auto object-contain"
+              className="h-[3.25rem] w-auto self-start object-contain"
             />
             <h2 className="font-display text-3xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-4xl">
               Catz and Dogz
@@ -146,7 +146,7 @@ export default function BrandsPage() {
                 alt="Pawfect"
                 width={120}
                 height={120}
-                className="h-16 w-16 object-contain sm:h-20 sm:w-20"
+                className="h-[5.2rem] w-[5.2rem] object-contain sm:h-[6.5rem] sm:w-[6.5rem]"
               />
               <h2 className="font-display text-3xl leading-tight font-bold tracking-tight text-ink uppercase sm:text-4xl">
                 Pawfect
