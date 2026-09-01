@@ -1,0 +1,16 @@
+/*
+Theme Name: Avin Tejarat Parto
+Theme URI: https://avintejarat.com
+Author: Avin Tejarat Parto
+Author URI: https://avintejarat.com
+Description: Custom B2B theme for Avin Tejarat Parto — an international sourcing and supply partner for the pet food industry (freeze-dried & air-dried proteins, chicken feet & paws, freeze-dried fruits/vegetables, animal protein ingredients). Built mobile-first, SEO/AEO-first, with a dynamic product architecture (business lines, categories, technical specifications, documents) managed entirely from wp-admin — no page builder, no ACF dependency. Multilingual-ready (FA/EN/RU) with RTL support via logical CSS properties.
+Version: 1.0.0
+Requires at least: 6.0
+Requires PHP: 7.4
+License: Unlicensed (private)
+Text Domain: avin
+
+All styling lives in assets/css/main.css (+ assets/css/rtl.css for RTL
+overrides), enqueued from functions.php. This file intentionally only
+carries the theme header WordPress requires to recognize the theme.
+*/

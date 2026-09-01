@@ -1,0 +1,23 @@
+# Copyright (C) 2026 Avin Tejarat Parto
+# This file is distributed under the same license as the Avin Tejarat Parto theme.
+msgid ""
+msgstr ""
+"Project-Id-Version: Avin Tejarat Parto 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-01T00:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: manual\n"
+"X-Domain: avin\n"
+"Language: \n"
+
+#. This file is a starting point, not a full extraction — every string in
+#. the theme already goes through __()/_e() with the "avin" text domain,
+#. so regenerate the real catalog once WP-CLI or Poedit is available:
+#.   wp i18n make-pot . languages/avin.pot --domain=avin
+#. or, in Poedit: File → New from POT/PO file → "Extract from sources",
+#. pointed at this theme directory with keywords __, _e, esc_html__,
+#. esc_html_e, esc_attr__, esc_attr_e and the "avin" text domain.
+#. See readme.txt "Multilingual (FA / EN / RU)" for the full setup.

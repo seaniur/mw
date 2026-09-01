@@ -1,0 +1,46 @@
+/**
+ * RTL overrides for Farsi (fa) content.
+ *
+ * main.css is written almost entirely with CSS logical properties
+ * (inset-inline-start, padding-inline, text-align: start, etc.), so most
+ * of the layout — header, mega menu, mobile drawer, forms, product
+ * pages — already mirrors correctly the moment <html dir="rtl"> is set;
+ * this file only holds the handful of things logical properties don't
+ * cover: letter-spacing tracking that reads wrong on Persian script, and
+ * icons whose direction is meaningful (arrows, chevrons).
+ *
+ * Enqueued only when is_rtl() is true (see inc/setup.php), which
+ * WordPress derives from the active language — so it loads automatically
+ * once a Farsi translation/locale is active, including under Polylang/
+ * WPML per-language switching.
+ */
+
+html[dir="rtl"] body {
+	letter-spacing: 0;
+}
+
+html[dir="rtl"] .eyebrow,
+html[dir="rtl"] .footer-col-heading,
+html[dir="rtl"] .mega-menu-heading,
+html[dir="rtl"] .product-card-format,
+html[dir="rtl"] .product-meta-list dt,
+html[dir="rtl"] .detail-list dt {
+	letter-spacing: 0;
+}
+
+/* Directional icons (arrow-end, chevron-end) are authored to point at
+   the inline-end edge already via icon choice per context — but the
+   plain SVG paths themselves are drawn LTR, so flip them under RTL. */
+html[dir="rtl"] .icon-arrow-end svg,
+html[dir="rtl"] .icon-chevron-end svg {
+	transform: scaleX(-1);
+}
+
+/* Numerals and country/measurement values inside otherwise-RTL rows read
+   better kept LTR (spec table values, quantities) when they're Latin
+   numerals/units — force the segment back to LTR without affecting
+   surrounding Farsi text flow. */
+html[dir="rtl"] .spec-table td:nth-child(2),
+html[dir="rtl"] .spec-table td:nth-child(3) {
+	unicode-bidi: plaintext;
+}
