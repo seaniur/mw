@@ -112,7 +112,21 @@ function avin_required_pages(): array
     return [
         'about' => __('About Avin Tejarat Parto', 'avin'),
         'contact' => __('Contact — Send an Inquiry', 'avin'),
+        'coming-soon' => __('Coming Soon', 'avin'),
     ];
+}
+
+/**
+ * Seed content for a required Page, used only the one time the Page is
+ * created — after that it's the team's to edit from wp-admin like any
+ * other Page, this never overwrites it again.
+ */
+function avin_required_page_default_content(string $slug): string
+{
+    if ($slug === 'coming-soon') {
+        return "<p>" . __("Our new website is on its way. Avin Tejarat Parto supplies freeze-dried and air-dried proteins, chicken feet &amp; paws, freeze-dried fruits &amp; vegetables, and animal protein ingredients to pet food manufacturers and distributors worldwide.", 'avin') . "</p>";
+    }
+    return '';
 }
 
 function avin_create_missing_pages(): void
@@ -126,6 +140,7 @@ function avin_create_missing_pages(): void
             'post_name' => $slug,
             'post_status' => 'publish',
             'post_type' => 'page',
+            'post_content' => avin_required_page_default_content($slug),
         ]);
     }
 }
@@ -145,14 +160,21 @@ add_action('after_switch_theme', 'avin_on_activate');
 /**
  * Self-heals installs that activated an older copy of this theme, or had a
  * required page/term later trashed, without needing a deactivate/
- * reactivate cycle.
+ * reactivate cycle. avin_create_missing_pages() always re-runs (it's a
+ * cheap, idempotent get_page_by_path() check per page) specifically so
+ * that updating the theme's files on an already-activated, already-live
+ * site — e.g. this file starting to require a new Page like "Coming
+ * Soon" — picks up the new page automatically on the next wp-admin visit,
+ * without needing avin_setup_checked to be cleared. The heavier one-time
+ * work (rewrite flush, term seeding) still only runs once.
  */
 function avin_ensure_setup(): void
 {
+    avin_create_missing_pages();
+
     if (get_option('avin_setup_checked')) {
         return;
     }
-    avin_create_missing_pages();
     avin_seed_taxonomy_terms();
     flush_rewrite_rules();
     update_option('avin_setup_checked', 1);

@@ -19,6 +19,7 @@ define('AVIN_URI', get_template_directory_uri());
 require AVIN_DIR . '/inc/helpers.php';
 require AVIN_DIR . '/inc/setup.php';
 require AVIN_DIR . '/inc/customizer.php';
+require AVIN_DIR . '/inc/coming-soon.php';
 require AVIN_DIR . '/inc/cpt-product.php';
 require AVIN_DIR . '/inc/meta-boxes.php';
 require AVIN_DIR . '/inc/mega-menu.php';

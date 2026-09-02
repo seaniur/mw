@@ -14,16 +14,21 @@ from wp-admin, nothing hard-coded in a template) and FA/EN/RU multilingual
    and activate from Appearance -> Themes.)
 
 2. On activation the theme automatically:
-   - creates the two Pages it needs (About, Contact, at /about/ and
-     /contact/ — leave their content empty and the templates render
-     everything, or write real copy into them and it's used instead)
+   - creates the Pages it needs (About, Contact, Coming Soon — see
+     "Coming Soon mode" below — at /about/, /contact/, /coming-soon/;
+     leave their content empty and the templates render everything, or
+     write real copy into them and it's used instead)
    - seeds the 5 business lines and their category groups (see "Product
      architecture" below) with the names/descriptions from the brief, so
      the mega menu and site aren't empty on first activation
    - switches "Plain" permalinks to pretty ones if needed
 
    If an earlier copy of the theme was already active, just visit
-   wp-admin once and the same check runs — no deactivate/reactivate needed.
+   wp-admin once and the same check runs — no deactivate/reactivate
+   needed. This also covers updating an already-live site to a newer
+   copy of these files: any Page the theme needs that doesn't exist yet
+   (e.g. Coming Soon, if this is an update to a site that predates that
+   feature) is created the next time anyone opens wp-admin, automatically.
 
 3. Go to Settings -> Permalinks and click Save once. This isn't optional
    for a fresh install — WordPress needs an explicit rewrite-rule flush
@@ -39,6 +44,31 @@ from wp-admin, nothing hard-coded in a template) and FA/EN/RU multilingual
    values once final brand files are confirmed — nothing else in the
    theme needs to change, every accent color derives from those three
    variables.
+
+== Coming Soon mode ==
+
+While the real site is still being built, turn on Appearance -> Customize
+-> Coming Soon Mode -> "Show the Coming Soon page to visitors". Once
+enabled:
+
+- Every logged-out visitor sees a single branded holding page (your logo
+  or a fallback initial, the site's tagline, the Coming Soon Page's own
+  text, and a "Get in Touch" mailto button) instead of the real site —
+  no navigation into pages that aren't ready.
+- Anyone logged into wp-admin (your whole team, any role) keeps seeing
+  and editing the real site completely normally — nothing is hidden from
+  you, only from the public. To check what a visitor actually sees, log
+  out or open the site in a private/incognito window.
+- The headline/body copy on that page is the **Coming Soon** entry under
+  Pages in wp-admin — open it and edit it exactly like any other Page,
+  no code changes needed. It comes pre-filled with a short description of
+  the business so it's never blank.
+- Turn the toggle off the moment the real site is ready — everything
+  reverts instantly, nothing to undo elsewhere.
+
+The gate only affects front-end page views; wp-admin, REST requests, and
+the inquiry form's submit handler are on separate request paths WordPress
+never runs it against, so none of those are ever blocked by this.
 
 == Product architecture ==
 
@@ -170,7 +200,8 @@ real deliverability; no theme changes needed.
   inc/inquiry.php               Inquiry form handler + wp-admin list/detail view
   inc/schema.php                JSON-LD structured data
   inc/seo.php                   Meta title/description, Open Graph/Twitter
-  inc/customizer.php            Contact Details Customizer section
+  inc/customizer.php            Contact Details + Coming Soon Mode Customizer sections
+  inc/coming-soon.php           Coming Soon mode gate + holding-page markup
   assets/css/main.css           All front-end styling + design tokens (top of file)
   assets/css/rtl.css            RTL-only overrides (loaded when is_rtl())
   assets/css/admin.css          Product edit screen (meta box) styling

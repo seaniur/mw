@@ -12,6 +12,22 @@ if (!defined('ABSPATH')) {
 
 function avin_customize_register(WP_Customize_Manager $wp_customize)
 {
+    $wp_customize->add_section('avin_coming_soon', [
+        'title' => __('Coming Soon Mode', 'avin'),
+        'priority' => 10,
+        'description' => __('When enabled, every visitor who isn\'t logged in sees the "Coming Soon" holding page (Pages → Coming Soon — edit its content there) instead of the real site. Logged-in team members always see and can edit the real site as normal; log out (or use a private/incognito window) to check what the public sees.', 'avin'),
+    ]);
+
+    $wp_customize->add_setting('avin_coming_soon_enabled', [
+        'default' => false,
+        'sanitize_callback' => 'rest_sanitize_boolean',
+    ]);
+    $wp_customize->add_control('avin_coming_soon_enabled', [
+        'section' => 'avin_coming_soon',
+        'label' => __('Show the Coming Soon page to visitors', 'avin'),
+        'type' => 'checkbox',
+    ]);
+
     $wp_customize->add_section('avin_contact', [
         'title' => __('Contact Details', 'avin'),
         'priority' => 30,
