@@ -18,7 +18,7 @@ function avin_customize_register(WP_Customize_Manager $wp_customize)
     ]);
 
     $wp_customize->add_setting('avin_contact_email', [
-        'default' => 'info@avintejarat.com',
+        'default' => 'sales@avinparto.com',
         'sanitize_callback' => 'sanitize_email',
     ]);
     $wp_customize->add_control('avin_contact_email', [

@@ -46,7 +46,7 @@ if (!defined('ABSPATH')) {
 		<div class="footer-col">
 			<p class="footer-col-heading"><?php esc_html_e('Get in Touch', 'avin'); ?></p>
 			<ul class="footer-contact">
-				<?php $email = get_theme_mod('avin_contact_email', 'info@avintejarat.com'); ?>
+				<?php $email = get_theme_mod('avin_contact_email', 'sales@avinparto.com'); ?>
 				<li><a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a></li>
 				<?php $whatsapp = get_theme_mod('avin_whatsapp_number', ''); ?>
 				<?php if ($whatsapp) : ?>

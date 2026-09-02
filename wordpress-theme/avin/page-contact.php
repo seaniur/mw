@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 get_header();
 while (have_posts()) :
     the_post();
-    $email = get_theme_mod('avin_contact_email', 'info@avintejarat.com');
+    $email = get_theme_mod('avin_contact_email', 'sales@avinparto.com');
     $whatsapp = get_theme_mod('avin_whatsapp_number', '');
     ?>
 
