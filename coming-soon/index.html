@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avin Tejarat Parto — Coming Soon</title>
+<meta name="description" content="Avin Tejarat Parto — an international B2B sourcing and supply partner for the pet food industry. Our new website is on its way.">
+<meta name="robots" content="noindex, follow">
+<style>
+	:root {
+		--brand-red: #c8452f;
+		--brand-orange: #e2793a;
+		--brand-amber: #eba23c;
+		--brand-gradient: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-orange) 55%, var(--brand-amber) 100%);
+		--color-paper: #fbf9f6;
+		--color-ink: #221f1c;
+		--color-ink-soft: #55504a;
+		--color-hairline: #e6ded3;
+	}
+	* { box-sizing: border-box; }
+	html, body {
+		height: 100%;
+		margin: 0;
+	}
+	body {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 100svh;
+		padding: 24px;
+		background: var(--color-paper);
+		color: var(--color-ink);
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+		text-align: center;
+	}
+	.card {
+		max-width: 560px;
+		width: 100%;
+	}
+	.badge {
+		width: 72px;
+		height: 72px;
+		margin: 0 auto 28px;
+		border-radius: 18px;
+		background: var(--brand-gradient);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #fff;
+		font-weight: 800;
+		font-size: 32px;
+		box-shadow: 0 12px 32px rgba(200, 69, 47, 0.28);
+	}
+	.eyebrow {
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--brand-red);
+		margin: 0 0 14px;
+	}
+	h1 {
+		margin: 0 0 12px;
+		font-size: clamp(1.8rem, 1.4rem + 2vw, 2.5rem);
+		letter-spacing: -0.01em;
+	}
+	.lede {
+		margin: 0 auto 8px;
+		max-width: 440px;
+		font-size: 1.05rem;
+		line-height: 1.6;
+		color: var(--color-ink-soft);
+	}
+	.lede-fa {
+		margin: 0 auto 28px;
+		max-width: 440px;
+		font-size: 0.95rem;
+		line-height: 1.9;
+		color: var(--color-ink-soft);
+		direction: rtl;
+	}
+	.pillars {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 8px;
+		margin: 0 0 32px;
+		padding: 0;
+		list-style: none;
+	}
+	.pillars li {
+		font-size: 12px;
+		font-weight: 700;
+		letter-spacing: 0.03em;
+		padding: 7px 14px;
+		border-radius: 999px;
+		border: 1px solid var(--color-hairline);
+		color: var(--color-ink-soft);
+		background: #fff;
+	}
+	.cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 0.9em 1.8em;
+		border-radius: 999px;
+		background: var(--brand-gradient);
+		color: #fff;
+		font-weight: 700;
+		font-size: 0.95rem;
+		text-decoration: none;
+		box-shadow: 0 8px 24px rgba(200, 69, 47, 0.22);
+	}
+	.footer {
+		margin-top: 40px;
+		font-size: 12px;
+		color: var(--color-ink-soft);
+		opacity: 0.75;
+	}
+</style>
+</head>
+<body>
+	<main class="card">
+		<div class="badge" aria-hidden="true">A</div>
+		<p class="eyebrow">International B2B Sourcing &amp; Supply Partner</p>
+		<h1>Avin Tejarat Parto</h1>
+		<p class="lede">
+			Our new website is on its way. Avin Tejarat Parto supplies freeze-dried
+			and air-dried proteins, chicken feet &amp; paws, freeze-dried fruits
+			&amp; vegetables, and animal protein ingredients to pet food
+			manufacturers and distributors worldwide.
+		</p>
+		<p class="lede-fa">
+			وب‌سایت جدید ما به‌زودی راه‌اندازی می‌شود. آوین تجارت پرتو، تأمین‌کننده
+			محصولات فریزدراید و ایردراید، پاچه و پنجه مرغ، میوه و سبزیجات
+			فریزدراید و پروتئین‌های حیوانی برای صنعت پت‌فود جهانی است.
+		</p>
+		<ul class="pillars">
+			<li>Reliable</li>
+			<li>Expert</li>
+			<li>Capable</li>
+			<li>International</li>
+		</ul>
+		<a class="cta" href="mailto:info@avintejarat.com">Get in Touch →</a>
+		<p class="footer">&copy; <span id="year"></span> Avin Tejarat Parto. All rights reserved.</p>
+	</main>
+	<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
