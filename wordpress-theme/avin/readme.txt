@@ -67,8 +67,24 @@ enabled:
   reverts instantly, nothing to undo elsewhere.
 
 The gate only affects front-end page views; wp-admin, REST requests, and
-the inquiry form's submit handler are on separate request paths WordPress
+the inquiry/notify form handlers are on separate request paths WordPress
 never runs it against, so none of those are ever blocked by this.
+
+**Notify Me signups**: the holding page includes an email opt-in ("Get
+notified when we launch"). Submissions are stored under **Notify Me
+Signups** in the wp-admin sidebar (one per email, duplicates are silently
+deduped) and a short email is sent to the Inquiry Notification Email
+(falls back to Contact Email) each time someone new signs up, so you'll
+know before you even check wp-admin. When the real site is ready, that
+list is your launch-announcement audience — export it however you like
+(e.g. a CSV/export plugin, or just copy the emails from the list table).
+
+Bot handling on that form is three-layered, all server-side, no
+third-party CAPTCHA/script: a honeypot field real visitors never see or
+fill, a nonce, and a minimum 3-second time-on-page before a submission is
+accepted. A bot tripping any of these is shown the same "success" message
+a real visitor gets — it's just quietly never stored — so scripted
+submitters get no signal about what caught them.
 
 == Product architecture ==
 
