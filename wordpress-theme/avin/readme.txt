@@ -51,18 +51,22 @@ While the real site is still being built, turn on Appearance -> Customize
 -> Coming Soon Mode -> "Show the Coming Soon page to visitors". Once
 enabled:
 
-- Every logged-out visitor sees a single branded holding page (your logo
-  or a fallback initial, the site's tagline, the Coming Soon Page's own
-  text, and a "Get in Touch" mailto button) instead of the real site —
-  no navigation into pages that aren't ready.
+- Every logged-out visitor sees a single branded holding page (your logo,
+  four category boxes — Freeze-Dried Pet Food, Air-Dried Pet Food,
+  Chicken Feet Products, Animal Protein Ingredients — and a "Get in
+  Touch" mailto button) instead of the real site — no navigation into
+  pages that aren't ready.
 - Anyone logged into wp-admin (your whole team, any role) keeps seeing
   and editing the real site completely normally — nothing is hidden from
   you, only from the public. To check what a visitor actually sees, log
   out or open the site in a private/incognito window.
-- The headline/body copy on that page is the **Coming Soon** entry under
-  Pages in wp-admin — open it and edit it exactly like any other Page,
-  no code changes needed. It comes pre-filled with a short description of
-  the business so it's never blank.
+- The **Coming Soon Page Logo** control right under the toggle uploads a
+  logo used only on this holding page (handy if it should differ from
+  the main site logo); leave it empty and it falls back to Customize ->
+  Site Identity's logo, then to a plain initial if neither is set.
+  The **Coming Soon** entry under Pages in wp-admin still exists and
+  sets the browser tab title, but its body content isn't shown on the
+  page anymore — it was replaced by the four category boxes above.
 - Turn the toggle off the moment the real site is ready — everything
   reverts instantly, nothing to undo elsewhere.
 

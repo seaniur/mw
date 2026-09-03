@@ -42,9 +42,19 @@ function avin_render_coming_soon_page(): void
 {
     $page = get_page_by_path('coming-soon');
     $title = $page ? get_the_title($page) : __('Coming Soon', 'avin');
-    $content = $page ? apply_filters('the_content', $page->post_content) : '';
     $email = get_theme_mod('avin_contact_email', 'sales@avinparto.com');
     $notify_status = isset($_GET['avin_notify']) ? sanitize_key(wp_unslash($_GET['avin_notify'])) : '';
+
+    // Coming Soon Logo (Customize → Coming Soon Mode) takes priority;
+    // falls back to the site's main logo (Customize → Site Identity).
+    $logo_id = (int) get_theme_mod('avin_coming_soon_logo', 0) ?: (int) get_theme_mod('custom_logo', 0);
+
+    $categories = [
+        ['icon' => 'dog', 'label' => __('Freeze-Dried Pet Food', 'avin')],
+        ['icon' => 'dog', 'label' => __('Air-Dried Pet Food', 'avin')],
+        ['icon' => 'chicken-feet', 'label' => __('Chicken Feet Products', 'avin')],
+        ['icon' => 'powder', 'label' => __('Animal Protein Ingredients', 'avin')],
+    ];
 
     nocache_headers();
     ?>
@@ -85,6 +95,8 @@ function avin_render_coming_soon_page(): void
 			text-align: center;
 		}
 		.card { max-width: 560px; width: 100%; }
+		.logo { margin: 0 auto 28px; display: flex; justify-content: center; }
+		.logo img { max-height: 64px; width: auto; display: block; }
 		.badge {
 			width: 72px; height: 72px;
 			margin: 0 auto 28px;
@@ -97,18 +109,43 @@ function avin_render_coming_soon_page(): void
 			font-weight: 800;
 			font-size: 32px;
 			box-shadow: 0 12px 32px rgba(200, 69, 47, 0.28);
-			overflow: hidden;
 		}
-		.badge img { max-width: 100%; max-height: 100%; object-fit: contain; }
 		.eyebrow {
 			font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
 			text-transform: uppercase; color: var(--brand-red);
 			margin: 0 0 14px;
 		}
-		h1 { margin: 0 0 12px; font-size: clamp(1.8rem, 1.4rem + 2vw, 2.5rem); letter-spacing: -0.01em; }
-		.lede { margin: 0 auto 28px; max-width: 440px; font-size: 1.05rem; line-height: 1.6; color: var(--color-ink-soft); }
-		.lede p { margin: 0 0 1em; }
-		.lede p:last-child { margin-bottom: 0; }
+		h1 { margin: 0 0 28px; font-size: clamp(1.8rem, 1.4rem + 2vw, 2.5rem); letter-spacing: -0.01em; }
+		.category-grid {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 12px;
+			max-width: 420px;
+			margin: 0 auto 28px;
+			padding: 0;
+			list-style: none;
+		}
+		.category-card {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 10px;
+			padding: 18px 10px;
+			border-radius: 14px;
+			border: 1px solid var(--color-hairline);
+			background: #fff;
+		}
+		.category-icon {
+			width: 40px; height: 40px;
+			border-radius: 10px;
+			background: var(--color-paper);
+			color: var(--brand-red);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.category-icon svg { width: 22px; height: 22px; }
+		.category-label { font-size: 12px; font-weight: 700; line-height: 1.3; }
 		.cta {
 			display: inline-flex; align-items: center; gap: 8px;
 			padding: 0.9em 1.8em;
@@ -131,6 +168,7 @@ function avin_render_coming_soon_page(): void
 			background: #fff;
 			font-size: 0.9rem;
 			min-width: 0;
+			text-align: center;
 		}
 		.notify-form button {
 			padding: 0.75em 1.4em;
@@ -155,18 +193,25 @@ function avin_render_coming_soon_page(): void
 </head>
 <body>
 	<main class="card">
-		<div class="badge" aria-hidden="true">
-			<?php if (has_custom_logo()) : ?>
-				<?php echo wp_get_attachment_image(get_theme_mod('custom_logo'), 'thumbnail'); ?>
-			<?php else : ?>
-				<?php echo esc_html(mb_substr(get_bloginfo('name'), 0, 1)); ?>
-			<?php endif; ?>
-		</div>
+		<?php if ($logo_id) : ?>
+			<div class="logo">
+				<?php echo wp_get_attachment_image($logo_id, 'medium'); ?>
+			</div>
+		<?php else : ?>
+			<div class="badge" aria-hidden="true"><?php echo esc_html(mb_substr(get_bloginfo('name'), 0, 1)); ?></div>
+		<?php endif; ?>
 		<p class="eyebrow"><?php esc_html_e('International B2B Sourcing & Supply Partner', 'avin'); ?></p>
 		<h1><?php echo esc_html(get_bloginfo('name') ?: $title); ?></h1>
-		<?php if ($content) : ?>
-			<div class="lede"><?php echo wp_kses_post($content); ?></div>
-		<?php endif; ?>
+
+		<ul class="category-grid">
+			<?php foreach ($categories as $category) : ?>
+				<li class="category-card">
+					<span class="category-icon" aria-hidden="true"><?php echo avin_icon($category['icon']); ?></span>
+					<span class="category-label"><?php echo esc_html($category['label']); ?></span>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+
 		<?php if ($email) : ?>
 			<a class="cta" href="mailto:<?php echo esc_attr($email); ?>"><?php esc_html_e('Get in Touch', 'avin'); ?> →</a>
 		<?php endif; ?>
@@ -191,8 +236,7 @@ function avin_render_coming_soon_page(): void
 				<label for="avin-notify-hp"><?php esc_html_e('Leave this field empty', 'avin'); ?></label>
 				<input type="text" id="avin-notify-hp" name="hp_field" tabindex="-1" autocomplete="off">
 			</span>
-			<label class="screen-reader-text" for="avin-notify-email"><?php esc_html_e('Email address', 'avin'); ?></label>
-			<input type="email" id="avin-notify-email" name="email" placeholder="<?php esc_attr_e('you@company.com', 'avin'); ?>" required>
+			<input type="email" id="avin-notify-email" name="email" aria-label="<?php esc_attr_e('Email address', 'avin'); ?>" placeholder="<?php esc_attr_e('you@company.com', 'avin'); ?>" required>
 			<button type="submit"><?php esc_html_e('Notify Me', 'avin'); ?></button>
 		</form>
 

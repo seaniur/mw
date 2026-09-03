@@ -28,6 +28,17 @@ function avin_customize_register(WP_Customize_Manager $wp_customize)
         'type' => 'checkbox',
     ]);
 
+    $wp_customize->add_setting('avin_coming_soon_logo', [
+        'default' => 0,
+        'sanitize_callback' => 'absint',
+    ]);
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'avin_coming_soon_logo', [
+        'section' => 'avin_coming_soon',
+        'label' => __('Coming Soon Page Logo', 'avin'),
+        'description' => __('Optional — falls back to the main Site Identity logo below if left empty.', 'avin'),
+        'mime_type' => 'image',
+    ]));
+
     $wp_customize->add_section('avin_contact', [
         'title' => __('Contact Details', 'avin'),
         'priority' => 30,
