@@ -14,13 +14,18 @@ from wp-admin, nothing hard-coded in a template) and FA/EN/RU multilingual
    and activate from Appearance -> Themes.)
 
 2. On activation the theme automatically:
-   - creates the Pages it needs (About, Contact, Coming Soon — see
-     "Coming Soon mode" below — at /about/, /contact/, /coming-soon/;
-     leave their content empty and the templates render everything, or
-     write real copy into them and it's used instead)
+   - creates the Pages it needs (Home, About, Contact, Coming Soon, Blog
+     — see "Coming Soon mode" and "Blog" below — at /about/, /contact/,
+     /coming-soon/, /blog/; leave their content empty and the templates
+     render everything, or write real copy into them and it's used
+     instead). Home and Blog also get wired up under Settings -> Reading
+     as the site's front page / posts page, which is what makes /blog/
+     work as an actual paginated post index rather than an ordinary Page.
    - seeds the 5 business lines and their category groups (see "Product
-     architecture" below) with the names/descriptions from the brief, so
-     the mega menu and site aren't empty on first activation
+     architecture" below), and the mega menu's 3 categories + 8 items
+     (see "Navigation & Mega Menu" below), with the names/descriptions
+     from the brief, so the mega menu and site aren't empty on first
+     activation
    - switches "Plain" permalinks to pretty ones if needed
 
    If an earlier copy of the theme was already active, just visit
@@ -38,12 +43,32 @@ from wp-admin, nothing hard-coded in a template) and FA/EN/RU multilingual
    manually if a business-line or product URL 404s.
 
 4. Set the real logo under Appearance -> Customize -> Site Identity
-   (Custom Logo). The three brand colors in assets/css/main.css
-   (--brand-red / --brand-orange / --brand-amber, top of the file) were
-   read off the submitted logo mark; nudge them to the exact brand hex
-   values once final brand files are confirmed — nothing else in the
-   theme needs to change, every accent color derives from those three
-   variables.
+   (Custom Logo) — it appears next to the company name in the header and
+   footer (see "Logo" below). The three brand colors in assets/css/
+   main.css (--brand-red / --brand-orange / --brand-amber, top of the
+   file) were read off the submitted logo mark; nudge them to the exact
+   brand hex values once final brand files are confirmed — nothing else
+   in the theme needs to change, every accent color derives from those
+   three variables.
+
+== Logo ==
+
+The header/footer show the uploaded logo image and the site name side by
+side (Appearance -> Customize -> Site Identity sets both the logo and
+the "Site Title" text used here). Two things worth knowing:
+
+- **SVG uploads are enabled** for Administrators only (Settings ->
+  General mime-type allowlist is otherwise restricted for security — an
+  SVG can carry embedded scripts, so this is deliberately not opened up
+  to lower roles). Upload a vector logo there for a crisp mark at any
+  size instead of a raster PNG/JPG. See the comment above
+  avin_allow_svg_uploads() in inc/setup.php if editors below
+  Administrator ever need this too — that needs a real SVG sanitizer
+  added first, not just widening the capability check.
+- The logo's display size is controlled by CSS (assets/css/main.css,
+  .site-logo-mark, 52px tall / 40px in the header's compact scrolled
+  state) — not by the uploaded file's own dimensions, so any reasonably
+  sized source image works.
 
 == Coming Soon mode ==
 
@@ -89,6 +114,63 @@ fill, a nonce, and a minimum 3-second time-on-page before a submission is
 accepted. A bot tripping any of these is shown the same "success" message
 a real visitor gets — it's just quietly never stored — so scripted
 submitters get no signal about what caught them.
+
+== Navigation & Mega Menu ==
+
+The primary nav (Home / Products / Blog / About / Contact) is fixed —
+hard-coded in avin_primary_nav_items() (inc/setup.php), not an
+Appearance -> Menus wp_nav_menu, on purpose: "Products" has to stay
+wired to the mega menu trigger, so letting it be freely renamed/removed/
+reordered from a generic menu editor would silently break that. Home/
+Blog/About/Contact's URLs still update automatically if you change which
+Pages are assigned as the front page / posts page.
+
+The Products mega menu is its own small content type, separate from the
+Products/business-line catalog described below, because it needs an
+image + subtitle + link per entry that products/business lines don't
+carry:
+
+- **Mega Menu Categories** (wp-admin -> Products -> Mega Categories) —
+  the three fixed column-1 selectors: Food, Pet Food, Feed. Just a name
+  and an order (seeded 1/2/3 on activation); there's no order field in
+  the UI for this one since there are only ever 3 of them — add one the
+  same way Mega Items has theirs if that changes.
+- **Mega Menu Items** (wp-admin -> Products -> Mega Items) — the cards
+  each category reveals (e.g. "Chicken Feet Products" under Food). Open
+  any item to edit its **Mega Category** (which of the 3 columns it
+  appears under), **Subtitle**, **Background Image** (optional — cards
+  without one get a clean minimal treatment instead, per the brief),
+  **Explore Link URL** (where the card's "Explore ->" goes — leave empty
+  and it falls back to the All Products archive), and **Order**.
+
+Seeded on activation with the 8 items from the approved structure —
+Chicken Feet Products / Extracts / Freeze-Dried Snacks under Food;
+Freeze-Dried Products / Air-Dried Products / Paste Products under Pet
+Food; Chicken Powders / Marine Powders under Feed — with Explore links
+pre-filled to the matching existing business-line landing page for the 4
+items that have one (Chicken Feet Products, Freeze-Dried Products,
+Air-Dried Products, and both powder items point at Ingredients &
+Solutions); the other 4 (Extracts, Freeze-Dried Snacks, Paste Products)
+don't have a dedicated landing page yet, so point at All Products until
+one exists — update their Explore Link URL once it does.
+
+On desktop, clicking "Products" opens all three categories' item panels
+at once in the DOM (every link is always real and crawlable — nothing
+is fetched or swapped in via JS) and only toggles which one is visible;
+hovering or clicking a category (Food/Pet Food/Feed) switches instantly
+with no reload. On mobile/tablet the same data renders as a nested
+accordion (Products -> category -> items) instead of attempting the
+desktop's multi-column hover layout on a touch screen.
+
+== Blog ==
+
+A standard WordPress blog: write posts under Posts -> Add New as usual.
+home.php is the listing template (card grid with featured image, excerpt,
+date), single.php is the single-post template — both styled to match the
+rest of the theme. "Blog" in the nav and the mega menu's footer link
+both resolve via avin_blog_url() (inc/setup.php), which reads the live
+Settings -> Reading -> "Posts page" value rather than assuming a slug,
+so it stays correct even if that's later pointed at a different Page.
 
 == Product architecture ==
 
@@ -212,11 +294,13 @@ real deliverability; no theme changes needed.
   taxonomy-business_line.php   Business-line landing pages (all 5 lines share this)
   single-product.php           Product detail page (every section from the brief)
   archive-product.php          "All Products" catalog with business-line filter pills
-  header.php / footer.php      Site chrome, logo, nav, footer columns
+  home.php                     Blog listing (WordPress's "Posts page" template)
+  single.php                   Single blog post
+  header.php / footer.php      Site chrome, logo+name, nav, footer columns
   template-parts/              mega-menu, mobile-nav, language-switcher, product-card, inquiry-form
   inc/cpt-product.php           Product CPT, taxonomies, seed data, query helpers
   inc/meta-boxes.php            Every dynamic product field (add a field here, it just works)
-  inc/mega-menu.php             Mega-menu column grouping/data assembly
+  inc/mega-menu.php             Mega Categories/Items taxonomies, admin fields, seed data, query helpers
   inc/inquiry.php               Inquiry form handler + wp-admin list/detail view
   inc/schema.php                JSON-LD structured data
   inc/seo.php                   Meta title/description, Open Graph/Twitter

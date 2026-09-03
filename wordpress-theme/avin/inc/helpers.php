@@ -45,6 +45,27 @@ function avin_icon(string $name, string $class = ''): string
 }
 
 /**
+ * The site logo + company name lockup shared by header.php and
+ * footer.php. Deliberately does NOT use the_custom_logo() — that
+ * function prints its own wrapping <a>, which nested inside this
+ * function's own <a href="home_url"> would emit invalid nested anchors.
+ * Building the <img> directly with wp_get_attachment_image() avoids that
+ * and lets the logo and the name sit inside one link, side by side.
+ */
+function avin_site_logo(): void
+{
+    echo '<a href="' . esc_url(home_url('/')) . '" class="site-logo" rel="home">';
+    if (has_custom_logo()) {
+        echo wp_get_attachment_image(get_theme_mod('custom_logo'), 'full', false, [
+            'class' => 'site-logo-mark',
+            'loading' => 'eager',
+        ]);
+    }
+    echo '<span class="site-logo-text">' . esc_html(get_bloginfo('name')) . '</span>';
+    echo '</a>';
+}
+
+/**
  * True when $url matches (or is a parent path of) the current request —
  * used to set aria-current on nav links.
  */
@@ -97,6 +118,17 @@ function avin_get_breadcrumb_trail(): array
 
     if (is_post_type_archive('product')) {
         $trail[] = ['label' => __('All Products', 'avin')];
+        return $trail;
+    }
+
+    if (is_home()) {
+        $trail[] = ['label' => __('Blog', 'avin')];
+        return $trail;
+    }
+
+    if (is_singular('post')) {
+        $trail[] = ['label' => __('Blog', 'avin'), 'url' => avin_blog_url()];
+        $trail[] = ['label' => get_the_title()];
         return $trail;
     }
 

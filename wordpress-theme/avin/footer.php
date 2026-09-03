@@ -14,11 +14,7 @@ if (!defined('ABSPATH')) {
 <footer class="site-footer">
 	<div class="container footer-top">
 		<div class="footer-brand">
-			<a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo">
-				<?php if (has_custom_logo()) : the_custom_logo(); else : ?>
-					<span class="site-logo-text"><?php bloginfo('name'); ?></span>
-				<?php endif; ?>
-			</a>
+			<?php avin_site_logo(); ?>
 			<p class="footer-tagline">
 				<?php esc_html_e('A reliable, expert, and internationally oriented B2B sourcing and supply partner for the pet food industry.', 'avin'); ?>
 			</p>

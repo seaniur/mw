@@ -89,6 +89,44 @@
 		});
 	}
 
+	/* ---- Mega menu category switching (FOOD / PET FOOD / FEED) --------
+	 * Column 1's category buttons swap which of the pre-rendered item
+	 * panels is visible. Bound to both click (covers touch, mouse, and
+	 * keyboard Enter/Space — a button's click event fires for all three)
+	 * and mouseenter (an instant hover-preview for desktop mouse users on
+	 * top of that, never the only way to trigger it).
+	 */
+	function initMegaMenuCategories() {
+		var grid = document.querySelector('[data-mega-panel] .mega-menu-grid');
+		if (!grid) {
+			return;
+		}
+		var triggers = grid.querySelectorAll('[data-mega-category-trigger]');
+		var panels = grid.querySelectorAll('[data-mega-panel-for]');
+
+		function activate(slug) {
+			triggers.forEach(function (btn) {
+				var isActive = btn.dataset.megaCategory === slug;
+				btn.classList.toggle('is-active', isActive);
+				btn.setAttribute('aria-selected', String(isActive));
+			});
+			panels.forEach(function (panel) {
+				var isActive = panel.dataset.megaPanelFor === slug;
+				panel.classList.toggle('is-active', isActive);
+				panel.hidden = !isActive;
+			});
+		}
+
+		triggers.forEach(function (btn) {
+			btn.addEventListener('click', function () {
+				activate(btn.dataset.megaCategory);
+			});
+			btn.addEventListener('mouseenter', function () {
+				activate(btn.dataset.megaCategory);
+			});
+		});
+	}
+
 	/* ---- Mobile nav drawer --------------------------------------------- */
 	function initMobileNav() {
 		var toggle = document.querySelector('[data-mobile-nav-toggle]');
@@ -183,6 +221,7 @@
 	onReady(function () {
 		initStickyHeader();
 		initMegaMenu();
+		initMegaMenuCategories();
 		initMobileNav();
 		initSearchToggle();
 		initSampleRequestLinks();

@@ -1,9 +1,11 @@
 <?php
 /**
- * Site header: skip link, sticky/compact nav bar with the Products mega
- * menu, primary menu, search, language switcher, the "Send an Inquiry"
- * CTA, and the mobile nav trigger. Markup avoids anything that depends on
- * :hover alone — every interactive piece works by click/tap and keyboard.
+ * Site header: [logo + company name] — [Home / Products (mega menu) /
+ * Blog / About / Contact] — [search / language switcher / "Send an
+ * Inquiry" CTA / mobile nav trigger], sticky with a compact state on
+ * scroll (assets/css/main.css .is-compact, toggled in assets/js/main.js).
+ * Markup avoids anything that depends on :hover alone — every interactive
+ * piece works by click/tap and keyboard too.
  */
 
 if (!defined('ABSPATH')) {
@@ -24,36 +26,32 @@ if (!defined('ABSPATH')) {
 <header class="site-header" data-site-header>
 	<div class="site-header-bar">
 		<div class="container site-header-inner">
-			<a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo" rel="home">
-				<?php if (has_custom_logo()) : ?>
-					<?php the_custom_logo(); ?>
-				<?php else : ?>
-					<span class="site-logo-text"><?php bloginfo('name'); ?></span>
-				<?php endif; ?>
-			</a>
+			<?php avin_site_logo(); ?>
 
 			<nav class="main-nav" aria-label="<?php esc_attr_e('Primary', 'avin'); ?>">
 				<ul class="main-nav-list">
-					<li class="main-nav-item has-mega">
-						<button
-							type="button"
-							class="main-nav-trigger"
-							aria-expanded="false"
-							aria-controls="products-mega-menu"
-							data-mega-trigger
-						>
-							<?php esc_html_e('Products', 'avin'); ?>
-							<?php echo avin_icon('chevron-down'); ?>
-						</button>
-					</li>
-					<?php
-					wp_nav_menu([
-						'theme_location' => 'primary',
-						'container' => false,
-						'items_wrap' => '%3$s',
-						'fallback_cb' => 'avin_primary_menu_fallback',
-					]);
-					?>
+					<?php foreach (avin_primary_nav_items() as $nav_item) : ?>
+						<?php if (!empty($nav_item['mega'])) : ?>
+							<li class="main-nav-item has-mega">
+								<button
+									type="button"
+									class="main-nav-trigger"
+									aria-expanded="false"
+									aria-controls="products-mega-menu"
+									data-mega-trigger
+								>
+									<?php echo esc_html($nav_item['label']); ?>
+									<?php echo avin_icon('chevron-down'); ?>
+								</button>
+							</li>
+						<?php else : ?>
+							<li class="main-nav-item">
+								<a href="<?php echo esc_url($nav_item['url']); ?>"<?php echo avin_nav_is_current($nav_item['url']) ? ' aria-current="page"' : ''; ?>>
+									<?php echo esc_html($nav_item['label']); ?>
+								</a>
+							</li>
+						<?php endif; ?>
+					<?php endforeach; ?>
 				</ul>
 			</nav>
 
