@@ -32,16 +32,36 @@ function avin_setup()
 }
 add_action('after_setup_theme', 'avin_setup');
 
+/**
+ * The enqueued version string for a theme asset — its own file's last-
+ * modified time rather than the static AVIN_VERSION constant. A manually
+ * bumped constant is easy to forget (this theme shipped several rounds
+ * of CSS/JS changes under an unchanged "1.0.0" before this was fixed),
+ * and when it's forgotten, browsers and any host/CDN cache keep serving
+ * the *previous* file indefinitely against the *unchanged* ?ver= URL —
+ * exactly the "my changes aren't showing up" bug. filemtime() makes the
+ * version — and therefore the cache — change automatically the moment
+ * the file on disk does, with nothing to remember. Falls back to
+ * AVIN_VERSION only if the file can't be stat'd (unexpected, but keeps
+ * wp_enqueue_style/script from choking on a false/0 version).
+ */
+function avin_asset_version(string $relative_path): string
+{
+    $path = AVIN_DIR . $relative_path;
+    $mtime = file_exists($path) ? filemtime($path) : false;
+    return $mtime ? (string) $mtime : AVIN_VERSION;
+}
+
 function avin_enqueue_assets()
 {
-    wp_enqueue_style('avin-style', get_stylesheet_uri(), [], AVIN_VERSION);
-    wp_enqueue_style('avin-main', AVIN_URI . '/assets/css/main.css', ['avin-style'], AVIN_VERSION);
+    wp_enqueue_style('avin-style', get_stylesheet_uri(), [], avin_asset_version('/style.css'));
+    wp_enqueue_style('avin-main', AVIN_URI . '/assets/css/main.css', ['avin-style'], avin_asset_version('/assets/css/main.css'));
 
     if (is_rtl()) {
-        wp_enqueue_style('avin-rtl', AVIN_URI . '/assets/css/rtl.css', ['avin-main'], AVIN_VERSION);
+        wp_enqueue_style('avin-rtl', AVIN_URI . '/assets/css/rtl.css', ['avin-main'], avin_asset_version('/assets/css/rtl.css'));
     }
 
-    wp_enqueue_script('avin-main', AVIN_URI . '/assets/js/main.js', [], AVIN_VERSION, true);
+    wp_enqueue_script('avin-main', AVIN_URI . '/assets/js/main.js', [], avin_asset_version('/assets/js/main.js'), true);
 
     wp_localize_script('avin-main', 'avinInquiry', [
         'productLabel' => __('Product', 'avin'),
@@ -60,8 +80,8 @@ function avin_admin_assets($hook)
     if ($post_type !== 'product' && !$is_mega_item_screen) {
         return;
     }
-    wp_enqueue_style('avin-admin', AVIN_URI . '/assets/css/admin.css', [], AVIN_VERSION);
-    wp_enqueue_script('avin-admin', AVIN_URI . '/assets/js/admin-meta-boxes.js', ['jquery', 'jquery-ui-sortable'], AVIN_VERSION, true);
+    wp_enqueue_style('avin-admin', AVIN_URI . '/assets/css/admin.css', [], avin_asset_version('/assets/css/admin.css'));
+    wp_enqueue_script('avin-admin', AVIN_URI . '/assets/js/admin-meta-boxes.js', ['jquery', 'jquery-ui-sortable'], avin_asset_version('/assets/js/admin-meta-boxes.js'), true);
     wp_enqueue_media();
 }
 add_action('admin_enqueue_scripts', 'avin_admin_assets');
