@@ -100,10 +100,11 @@ function avin_get_breadcrumb_trail(): array
 
     if (is_singular('product')) {
         $product_id = get_the_ID();
-        $trail[] = ['label' => __('Products', 'avin'), 'url' => get_post_type_archive_link('product')];
         $lines = get_the_terms($product_id, 'business_line');
         if ($lines && !is_wp_error($lines)) {
-            $trail[] = ['label' => $lines[0]->name, 'url' => avin_business_line_url($lines[0])];
+            $trail = array_merge($trail, avin_business_line_trail_segments($lines[0]));
+        } else {
+            $trail[] = ['label' => __('Products', 'avin'), 'url' => get_post_type_archive_link('product')];
         }
         $trail[] = ['label' => get_the_title($product_id)];
         return $trail;
@@ -111,9 +112,7 @@ function avin_get_breadcrumb_trail(): array
 
     if (is_tax('business_line')) {
         $term = get_queried_object();
-        $trail[] = ['label' => __('Products', 'avin'), 'url' => get_post_type_archive_link('product')];
-        $trail[] = ['label' => get_term_meta($term->term_id, 'avin_landing_heading', true) ?: $term->name];
-        return $trail;
+        return array_merge($trail, avin_business_line_trail_segments($term));
     }
 
     if (is_post_type_archive('product')) {
@@ -148,6 +147,31 @@ function avin_get_breadcrumb_trail(): array
     }
 
     return $trail;
+}
+
+/**
+ * Breadcrumb segments for a business_line term: just the term itself if
+ * it's a top-level group, or [group, term] if it's a child line — used
+ * by both the taxonomy archive's own trail and a product's (which
+ * continues on to its own title after these).
+ *
+ * @return array<int, array{label: string, url?: string}>
+ */
+function avin_business_line_trail_segments(WP_Term $term): array
+{
+    $label_for = fn (WP_Term $t) => get_term_meta($t->term_id, 'avin_landing_heading', true) ?: $t->name;
+
+    if (avin_term_is_group($term)) {
+        return [['label' => $label_for($term), 'url' => avin_business_line_url($term)]];
+    }
+
+    $segments = [];
+    $parent = get_term($term->parent, 'business_line');
+    if ($parent && !is_wp_error($parent)) {
+        $segments[] = ['label' => $label_for($parent), 'url' => avin_business_line_url($parent)];
+    }
+    $segments[] = ['label' => $label_for($term), 'url' => avin_business_line_url($term)];
+    return $segments;
 }
 
 /**

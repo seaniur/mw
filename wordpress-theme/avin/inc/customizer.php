@@ -12,6 +12,8 @@ if (!defined('ABSPATH')) {
 
 function avin_customize_register(WP_Customize_Manager $wp_customize)
 {
+    require_once AVIN_DIR . '/inc/class-avin-customize-repeater-control.php';
+
     $wp_customize->add_section('avin_coming_soon', [
         'title' => __('Coming Soon Mode', 'avin'),
         'priority' => 10,
@@ -38,6 +40,39 @@ function avin_customize_register(WP_Customize_Manager $wp_customize)
         'description' => __('Optional — falls back to the main Site Identity logo below if left empty.', 'avin'),
         'mime_type' => 'image',
     ]));
+
+    $columns_field = [
+        'type' => 'select',
+        'choices' => array_combine(range(1, 6), range(1, 6)),
+    ];
+    $wp_customize->add_setting('avin_coming_soon_columns_desktop', ['default' => 4, 'sanitize_callback' => 'absint']);
+    $wp_customize->add_control('avin_coming_soon_columns_desktop', array_merge($columns_field, [
+        'section' => 'avin_coming_soon',
+        'label' => __('Boxes per row — Desktop', 'avin'),
+    ]));
+    $wp_customize->add_setting('avin_coming_soon_columns_tablet', ['default' => 2, 'sanitize_callback' => 'absint']);
+    $wp_customize->add_control('avin_coming_soon_columns_tablet', array_merge($columns_field, [
+        'section' => 'avin_coming_soon',
+        'label' => __('Boxes per row — Tablet', 'avin'),
+    ]));
+    $wp_customize->add_setting('avin_coming_soon_columns_mobile', ['default' => 2, 'sanitize_callback' => 'absint']);
+    $wp_customize->add_control('avin_coming_soon_columns_mobile', array_merge($columns_field, [
+        'section' => 'avin_coming_soon',
+        'label' => __('Boxes per row — Mobile', 'avin'),
+    ]));
+
+    avin_add_repeater_control($wp_customize, 'avin_coming_soon_boxes', [
+        'section' => 'avin_coming_soon',
+        'label' => __('Boxes', 'avin'),
+        'description' => __('Shown in a fixed card layout below the headline — the card style itself isn\'t editable here, only its content. Leave empty to keep the theme\'s default 4 boxes.', 'avin'),
+        'row_label' => __('Box', 'avin'),
+        'fields' => [
+            ['key' => 'icon', 'type' => 'image', 'label' => __('Icon', 'avin')],
+            ['key' => 'title', 'type' => 'text', 'label' => __('Title', 'avin')],
+            ['key' => 'description', 'type' => 'textarea', 'label' => __('Description', 'avin')],
+            ['key' => 'enabled', 'type' => 'checkbox', 'label' => __('Enabled', 'avin')],
+        ],
+    ]);
 
     $wp_customize->add_section('avin_contact', [
         'title' => __('Contact Details', 'avin'),

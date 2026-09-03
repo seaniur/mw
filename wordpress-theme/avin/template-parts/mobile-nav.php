@@ -36,9 +36,9 @@ if (!defined('ABSPATH')) {
 							</button>
 							<div id="mobile-products-panel" class="mobile-nav-submenu" data-accordion-panel hidden>
 								<ul class="mobile-nav-categories">
-									<?php foreach (avin_get_mega_categories() as $category) :
+									<?php foreach (avin_get_business_line_groups() as $category) :
                                         $panel_id = 'mobile-mega-' . $category->term_id;
-                                        $items = avin_get_mega_items($category->term_id);
+                                        $items = avin_get_business_line_children($category->term_id);
                                         ?>
 										<li class="mobile-nav-subaccordion">
 											<button type="button" class="mobile-nav-subaccordion-trigger" aria-expanded="false" aria-controls="<?php echo esc_attr($panel_id); ?>" data-accordion-trigger>
@@ -49,7 +49,7 @@ if (!defined('ABSPATH')) {
 												<ul>
 													<?php foreach ($items as $item) : ?>
 														<li>
-															<a href="<?php echo esc_url(avin_mega_item_url($item)); ?>">
+															<a href="<?php echo esc_url(avin_business_line_url($item)); ?>">
 																<?php echo esc_html($item->name); ?>
 																<?php echo avin_icon('chevron-end'); ?>
 															</a>

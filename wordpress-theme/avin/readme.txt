@@ -21,12 +21,14 @@ from wp-admin, nothing hard-coded in a template) and FA/EN/RU multilingual
      instead). Home and Blog also get wired up under Settings -> Reading
      as the site's front page / posts page, which is what makes /blog/
      work as an actual paginated post index rather than an ordinary Page.
-   - seeds the 5 business lines and their category groups (see "Product
-     architecture" below), and the mega menu's 3 categories + 8 items
-     (see "Navigation & Mega Menu" below), with the names/descriptions
-     from the brief, so the mega menu and site aren't empty on first
-     activation
-   - switches "Plain" permalinks to pretty ones if needed
+   - seeds the Business Lines taxonomy with its 3 groups (Food, Pet Food,
+     Feed) and 5 lines nested under them (see "Product architecture"
+     below), with the names/descriptions from the brief, so the mega menu
+     and site aren't empty on first activation. This seeding re-checks on
+     every wp-admin visit (cheap, idempotent), so it also picks up new
+     terms after a theme update without needing a reactivation.
+   - switches "Plain" permalinks to pretty ones if needed, and flushes
+     rewrite rules once after an update that changes the URL structure
 
    If an earlier copy of the theme was already active, just visit
    wp-admin once and the same check runs — no deactivate/reactivate
@@ -77,21 +79,28 @@ While the real site is still being built, turn on Appearance -> Customize
 enabled:
 
 - Every logged-out visitor sees a single branded holding page (your logo,
-  four category boxes — Freeze-Dried Pet Food, Air-Dried Pet Food,
-  Chicken Feet Products, Animal Protein Ingredients — and a "Get in
-  Touch" mailto button) instead of the real site — no navigation into
-  pages that aren't ready.
+  an editable grid of boxes, and a "Get in Touch" mailto button) instead
+  of the real site — no navigation into pages that aren't ready.
 - Anyone logged into wp-admin (your whole team, any role) keeps seeing
   and editing the real site completely normally — nothing is hidden from
   you, only from the public. To check what a visitor actually sees, log
-  out or open the site in a private/incognito window.
+  out or open the site in a private/incognito window. The Customizer's
+  live preview also always shows the real site so you can style it while
+  Coming Soon Mode is on.
 - The **Coming Soon Page Logo** control right under the toggle uploads a
   logo used only on this holding page (handy if it should differ from
   the main site logo); leave it empty and it falls back to Customize ->
   Site Identity's logo, then to a plain initial if neither is set.
   The **Coming Soon** entry under Pages in wp-admin still exists and
   sets the browser tab title, but its body content isn't shown on the
-  page anymore — it was replaced by the four category boxes above.
+  page anymore.
+- **Boxes** are fully editable under Appearance -> Customize -> Coming
+  Soon Mode -> Boxes: add/remove/reorder as many as you like, each with
+  its own icon (upload any image), title, and description — nothing
+  hard-coded. **Columns per row** are set independently for Desktop,
+  Tablet, and Mobile (a number field each), so the grid can be e.g. 4
+  columns on desktop, 2 on tablet, 1 on mobile, or any combination you
+  choose.
 - Turn the toggle off the moment the real site is ready — everything
   reverts instantly, nothing to undo elsewhere.
 
@@ -125,42 +134,29 @@ reordered from a generic menu editor would silently break that. Home/
 Blog/About/Contact's URLs still update automatically if you change which
 Pages are assigned as the front page / posts page.
 
-The Products mega menu is its own small content type, separate from the
-Products/business-line catalog described below, because it needs an
-image + subtitle + link per entry that products/business lines don't
-carry:
+The Products mega menu is driven directly by the **Business Lines**
+taxonomy (wp-admin -> Products -> Business Lines) described in "Product
+architecture" below — there's no separate mega-menu content type to keep
+in sync:
 
-- **Mega Menu Categories** (wp-admin -> Products -> Mega Categories) —
-  the three fixed column-1 selectors: Food, Pet Food, Feed. Just a name
-  and an order (seeded 1/2/3 on activation); there's no order field in
-  the UI for this one since there are only ever 3 of them — add one the
-  same way Mega Items has theirs if that changes.
-- **Mega Menu Items** (wp-admin -> Products -> Mega Items) — the cards
-  each category reveals (e.g. "Chicken Feet Products" under Food). Open
-  any item to edit its **Mega Category** (which of the 3 columns it
-  appears under), **Subtitle**, **Background Image** (optional — cards
-  without one get a clean minimal treatment instead, per the brief),
-  **Explore Link URL** (where the card's "Explore ->" goes — leave empty
-  and it falls back to the All Products archive), and **Order**.
+- The 3 top-level **group** terms (Food, Pet Food, Feed) are column 1's
+  fixed selectors.
+- Each group's child **line** terms (e.g. "Chicken Feet Products" under
+  Food) are the cards that column's panel reveals. Open any line's term
+  edit screen to set its **Card Image** (optional — cards without one get
+  a clean minimal treatment instead, per the brief), **Description**, and
+  **Menu Order**; the card always links to that line's own landing page
+  (see "Product architecture"), so there's no separate link field to keep
+  pointed at the right place.
 
-Seeded on activation with the 8 items from the approved structure —
-Chicken Feet Products / Extracts / Freeze-Dried Snacks under Food;
-Freeze-Dried Products / Air-Dried Products / Paste Products under Pet
-Food; Chicken Powders / Marine Powders under Feed — with Explore links
-pre-filled to the matching existing business-line landing page for the 4
-items that have one (Chicken Feet Products, Freeze-Dried Products,
-Air-Dried Products, and both powder items point at Ingredients &
-Solutions); the other 4 (Extracts, Freeze-Dried Snacks, Paste Products)
-don't have a dedicated landing page yet, so point at All Products until
-one exists — update their Explore Link URL once it does.
-
-On desktop, clicking "Products" opens all three categories' item panels
-at once in the DOM (every link is always real and crawlable — nothing
-is fetched or swapped in via JS) and only toggles which one is visible;
-hovering or clicking a category (Food/Pet Food/Feed) switches instantly
-with no reload. On mobile/tablet the same data renders as a nested
-accordion (Products -> category -> items) instead of attempting the
-desktop's multi-column hover layout on a touch screen.
+On desktop, clicking "Products" opens all three groups' panels at once in
+the DOM (every link is always real and crawlable — nothing is fetched or
+swapped in via JS) and only toggles which one is visible; hovering or
+clicking a group (Food/Pet Food/Feed) switches instantly with no reload,
+and the same switching also works via click/keyboard alone, so it's never
+hover-only. On mobile/tablet the same data renders as a nested accordion
+(Products -> group -> lines) instead of attempting the desktop's
+multi-column hover layout on a touch screen.
 
 == Blog ==
 
@@ -177,14 +173,35 @@ so it stays correct even if that's later pointed at a different Page.
 Everything under "Products" in wp-admin is one custom post type,
 `product`, with two taxonomies:
 
-- **Business Lines** (Products -> Business Lines) — the 5 lines from the
-  brief: Freeze-Dried Pet Food, Air-Dried Pet Food, Chicken Feet & Paws,
-  Freeze-Dried Fruits & Vegetables, Animal Protein Ingredients. Each
-  term's archive *is* its landing page (/freeze-dried-pet-food/ etc.).
-  Edit a term to change its mega-menu description, hero subtitle, CTA
-  labels, menu order, and which one gets the "featured" (Freeze-Dried)
-  treatment in the mega menu and homepage grid — under Quick Edit these
-  don't show; use the term edit screen's custom fields.
+- **Business Lines** (Products -> Business Lines) — hierarchical, two
+  levels deep. The 3 top-level **group** terms (Food, Pet Food, Feed) exist
+  purely to organize the site's URL structure and mega menu; the 5
+  **line** terms nest under them (Chicken Feet Products and others under
+  Food, Freeze-Dried Products etc. under Pet Food, the powder lines under
+  Feed). A line's archive *is* its landing page, nested under its group:
+
+      domain.com/food/chicken-feet-products/
+      domain.com/pet-food/freeze-dried-products/
+
+  and each product's own URL nests one level further under its line:
+
+      domain.com/food/chicken-feet-products/some-product-name/
+      domain.com/pet-food/freeze-dried-products/another-product/
+
+  A group term's own archive (e.g. /food/) shows a simple grid of its
+  child lines rather than a product grid. Edit any term (group or line) to
+  set its **Card Image**/icon, **Description**, hero subtitle, CTA labels,
+  menu order, and (lines only) which one gets the "featured" treatment in
+  the mega menu and homepage grid — under Quick Edit these don't show;
+  use the term edit screen's custom fields.
+
+  **If you're updating from an older version of this theme** where lines
+  had flat URLs (e.g. /freeze-dried-pet-food/) or products lived at
+  /products/{slug}/: those old URLs keep working. The theme 301-redirects
+  every legacy business-line and product URL to its new nested location
+  automatically (inc/cpt-product.php, `avin_redirect_legacy_urls()`) —
+  nothing to configure, and nothing breaks for anyone who bookmarked or
+  linked the old URLs, including search engines.
 
 - **Category Groups** (invisible taxonomy, no admin menu item of its
   own — managed via the Product Category Groups metabox on each product)
@@ -202,12 +219,12 @@ brief; every one of those fields is implemented, none are hard-coded.
 Technical Specifications, Certifications, and Documents are repeaters —
 click "+ Add Row" for as many parameters/certs/files as a product needs.
 
-Adding a new business line: Products -> Business Lines -> Add New. It
-appears in the mega menu and gets a working landing page automatically
-(grouped by whichever Category Groups you tag its products with, or a
-flat grid if you don't add any) — no template changes needed. To change
-which mega-menu column a line's card appears under, filter
-`avin_mega_menu_column_map` in a child theme/mu-plugin.
+Adding a new business line: Products -> Business Lines -> Add New, and
+set its **Parent** to Food / Pet Food / Feed (or leave it top-level to add
+a fourth group). It appears in the mega menu and gets a working landing
+page automatically at the matching nested URL (grouped by whichever
+Category Groups you tag its products with, or a flat grid if you don't
+add any) — no template changes needed.
 
 == Multilingual (FA / EN / RU) ==
 
@@ -237,7 +254,7 @@ decision, not something a theme should hard-code. Recommended setup:
 4. Translate each business-line term and each product; the taxonomy/CPT
    structure (business_line, product_category, product) is translated
    per-plugin's own UI, and URLs get the plugin's language prefix
-   (e.g. /fa/freeze-dried-pet-food/) automatically.
+   (e.g. /fa/food/chicken-feet-products/) automatically.
 5. `is_rtl()` (WordPress core) reflects the active language once
    Polylang/WPML sets it, which is what triggers assets/css/rtl.css.
 
@@ -255,12 +272,12 @@ decision, not something a theme should hard-code. Recommended setup:
   Open Graph + Twitter Card tags generated from them (inc/seo.php) —
   automatically disabled if Yoast/Rank Math/AIOSEO/SEO Framework is later
   installed, so the theme never fights a real SEO plugin.
-- Clean, descriptive URLs matching the brief's SEO architecture exactly:
-  /freeze-dried-pet-food/, /air-dried-pet-food/, /chicken-feet-products/,
-  /freeze-dried-human-food/, /ingredients-solutions/ for the five
-  business lines; /products/{product-slug}/ for individual products (flat
-  on purpose — a product's business line can be reclassified later
-  without ever breaking or redirecting its canonical URL).
+- Clean, descriptive, hierarchical URLs — /food/chicken-feet-products/,
+  /pet-food/freeze-dried-products/ etc. for each business line's landing
+  page, and /food/chicken-feet-products/{product-slug}/ for its products
+  (see "Product architecture" above) — with automatic 301 redirects from
+  any older flat URL, so search-engine rankings and inbound links carry
+  over rather than 404ing after an update.
 - WordPress core's native XML sitemap (wp-sitemap.xml, built in since 5.5)
   picks up the product CPT and business_line taxonomy automatically since
   both are public/show_in_rest — no sitemap plugin required.
@@ -286,31 +303,86 @@ PHP's `mail()` by default, which is unreliable on shared hosting and
 often lands in spam — install an SMTP plugin (e.g. "WP Mail SMTP") for
 real deliverability; no theme changes needed.
 
+== Homepage builder ==
+
+The homepage (front-page.php) is a fully CMS-driven page builder — every
+section, and every heading/copy/image/link inside it, is edited under
+Appearance -> Customize -> Homepage, nothing is hard-coded in the
+template. The panel has 10 sections, each with its own "Show this
+section" checkbox so it can be turned off independently:
+
+  01 Hero Slider          Repeater: one or more slides, each with a
+                           background image, heading, description, and
+                           an optional CTA button. One slide renders as a
+                           static hero (no arrows/dots); 2+ slides get a
+                           full prev/next + dot slider that auto-rotates
+                           every 6s, pauses on hover/focus, and never
+                           auto-advances under prefers-reduced-motion.
+  02 Company Value/Trust   Heading, copy, and a repeater of short trust
+                           points (e.g. "ISO 22000 certified").
+  03 Product Categories    Reads live from the Business Lines taxonomy's
+                           3 groups (Food/Pet Food/Feed) — nothing to
+                           configure here beyond the section heading; edit
+                           each group's card image/description on its own
+                           term edit screen (Products -> Business Lines).
+  04 Sourcing (Food)       Heading, copy, a repeater of numbered process
+                           steps (each with an optional icon image), and
+                           a CTA button.
+  05 Pet Food              Heading, copy, a repeater of highlight bullets,
+     Manufacturing          an optional large photo (two-column layout;
+                           drops to one column if no photo is set), and a
+                           CTA button.
+  06 Featured Products     Repeater: pick any published product per row,
+                           with optional name/description/image/link
+                           overrides if you want the card to read
+                           differently here than on its own page.
+  07 Private Label         Same shape as Sourcing: heading, copy, numbered
+                           steps, CTA button.
+  08 How We Work           Heading and a repeater of numbered steps, each
+                           with its own number label, title, and
+                           description.
+  09 Quality               Heading, a repeater of inline value points, and
+                           an optional repeater of certification badge
+                           images.
+  10 B2B CTA / RFQ         Heading, copy, and up to two CTA buttons
+                           (primary + secondary), each with its own link.
+
+Every section also has its own emptiness check: leave it fully blank and
+it renders nothing at all rather than an empty heading/shell, so turning
+a section "on" with no content configured yet never leaves a gap on the
+page.
+
 == Where to edit things ==
 
-  front-page.php              Homepage (hero, business-line grid, brand pillars, CTA)
-  page-about.php               About page (brand positioning fallback content)
-  page-contact.php             Contact page (inquiry form + contact info)
-  taxonomy-business_line.php   Business-line landing pages (all 5 lines share this)
-  single-product.php           Product detail page (every section from the brief)
-  archive-product.php          "All Products" catalog with business-line filter pills
-  home.php                     Blog listing (WordPress's "Posts page" template)
-  single.php                   Single blog post
-  header.php / footer.php      Site chrome, logo+name, nav, footer columns
-  template-parts/              mega-menu, mobile-nav, language-switcher, product-card, inquiry-form
-  inc/cpt-product.php           Product CPT, taxonomies, seed data, query helpers
-  inc/meta-boxes.php            Every dynamic product field (add a field here, it just works)
-  inc/mega-menu.php             Mega Categories/Items taxonomies, admin fields, seed data, query helpers
-  inc/inquiry.php               Inquiry form handler + wp-admin list/detail view
-  inc/schema.php                JSON-LD structured data
-  inc/seo.php                   Meta title/description, Open Graph/Twitter
-  inc/customizer.php            Contact Details + Coming Soon Mode Customizer sections
-  inc/coming-soon.php           Coming Soon mode gate + holding-page markup
-  assets/css/main.css           All front-end styling + design tokens (top of file)
-  assets/css/rtl.css            RTL-only overrides (loaded when is_rtl())
-  assets/css/admin.css          Product edit screen (meta box) styling
-  assets/js/main.js             Sticky header, mega menu, mobile nav, search toggle
-  assets/js/admin-meta-boxes.js Repeater rows + wp.media pickers for the meta boxes
+  front-page.php               Homepage — 10-section CMS-driven page builder (see above)
+  page-about.php                About page (brand positioning fallback content)
+  page-contact.php              Contact page (inquiry form + contact info)
+  taxonomy-business_line.php    Business-line pages — group terms show a line grid, leaf
+                                 terms (all 5 lines) share the product-grid landing layout
+  single-product.php            Product detail page (every section from the brief)
+  archive-product.php           "All Products" catalog with business-line filter pills
+  home.php                      Blog listing (WordPress's "Posts page" template)
+  single.php                    Single blog post
+  header.php / footer.php       Site chrome, logo+name, nav, footer columns
+  template-parts/               mega-menu, mobile-nav, language-switcher, product-card, inquiry-form
+  inc/cpt-product.php            Product CPT, hierarchical Business Lines taxonomy + nested
+                                 rewrite/permalinks, legacy URL redirects, seed data, query helpers
+  inc/meta-boxes.php             Every dynamic product field (add a field here, it just works)
+  inc/inquiry.php                Inquiry form handler + wp-admin list/detail view
+  inc/schema.php                 JSON-LD structured data
+  inc/seo.php                    Meta title/description, Open Graph/Twitter
+  inc/customizer.php             Contact Details + Coming Soon Mode Customizer sections
+  inc/customizer-homepage.php    Homepage builder's 10 Customizer sections (see above)
+  inc/customizer-repeater.php    Shared repeater/setting helpers used by every Customizer field
+  inc/class-avin-customize-repeater-control.php  The repeater control class itself
+  inc/coming-soon.php            Coming Soon mode gate + holding-page markup + boxes builder
+  assets/css/main.css            All front-end styling + design tokens (top of file)
+  assets/css/rtl.css             RTL-only overrides (loaded when is_rtl())
+  assets/css/admin.css           Product edit screen (meta box) styling
+  assets/css/customizer-repeater.css  Repeater control styling inside the Customizer sidebar
+  assets/js/main.js              Sticky header, mega menu, mobile nav, search toggle, hero slider
+  assets/js/admin-meta-boxes.js  Repeater rows + wp.media pickers for the meta boxes
+  assets/js/customizer-repeater.js  Add/remove/reorder rows + wp.media pickers for Customizer repeaters
 
 == Notes ==
 

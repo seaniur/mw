@@ -1,0 +1,88 @@
+/* Repeater control UI inside the Customizer's (narrow ~300px) sidebar. */
+
+.avin-repeater-control {
+	display: block;
+}
+
+.avin-repeater-rows {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin: 8px 0;
+}
+
+.avin-repeater-row {
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #fff;
+	padding: 10px;
+}
+
+.avin-repeater-row-fields {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.avin-repeater-field {
+	display: block;
+	font-weight: 400;
+}
+
+.avin-repeater-field-label {
+	display: block;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	color: #50575e;
+	margin-bottom: 3px;
+}
+
+.avin-repeater-field input[type="text"],
+.avin-repeater-field input[type="url"],
+.avin-repeater-field input[type="number"],
+.avin-repeater-field textarea,
+.avin-repeater-field select {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.avin-repeater-field-checkbox {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 12px;
+}
+
+.avin-repeater-field-image .avin-repeater-image-preview {
+	margin-bottom: 6px;
+	min-height: 1px;
+}
+.avin-repeater-field-image .avin-repeater-image-preview img {
+	max-width: 100%;
+	max-height: 90px;
+	display: block;
+	border-radius: 3px;
+}
+
+.avin-repeater-row-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid #f0f0f1;
+}
+.avin-repeater-row-actions button {
+	font-size: 13px;
+	text-decoration: none;
+}
+.avin-repeater-remove {
+	color: #b32d2e;
+}
+
+.avin-repeater-add {
+	width: 100%;
+	text-align: center;
+}

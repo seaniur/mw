@@ -609,6 +609,156 @@ html[dir="rtl"] .mobile-nav-submenu a { padding: var(--space-3) var(--space-7) v
 .stack-lg > * + * { margin-top: var(--space-6); }
 
 /* =========================================================================
+   Homepage — hero slider
+   ========================================================================= */
+
+.home-hero {
+	position: relative;
+	overflow: hidden;
+	background-color: var(--color-ink);
+}
+
+.home-hero-slides {
+	position: relative;
+	min-height: 460px;
+}
+
+.home-hero-slide {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	background-color: var(--color-ink);
+	background-size: cover;
+	background-position: center;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity var(--dur-base) var(--ease);
+}
+.home-hero-slide.is-active { position: relative; opacity: 1; visibility: visible; }
+.home-hero-slide::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, rgba(34, 31, 28, 0.82) 0%, rgba(34, 31, 28, 0.45) 60%, rgba(34, 31, 28, 0.2) 100%);
+}
+
+.home-hero-slide-inner {
+	position: relative;
+	z-index: 1;
+	max-width: 680px;
+	padding-block: var(--space-9);
+	color: #fff;
+}
+.home-hero-slide-inner h1 { color: #fff; }
+.home-hero-slide-inner .hero-lede { color: rgba(255, 255, 255, 0.82); }
+
+.home-hero-nav {
+	position: absolute;
+	bottom: var(--space-5);
+	inset-inline: 0;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-4);
+}
+
+.home-hero-arrow {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px; height: 40px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.12);
+	color: #fff;
+	transition: background var(--dur-fast) var(--ease);
+}
+.home-hero-arrow:hover { background: rgba(255, 255, 255, 0.25); }
+.home-hero-arrow svg { width: 18px; height: 18px; }
+.home-hero-arrow-next svg { transform: rotate(180deg); }
+html[dir="rtl"] .home-hero-arrow svg { transform: rotate(180deg); }
+html[dir="rtl"] .home-hero-arrow-next svg { transform: rotate(0deg); }
+
+.home-hero-dots { display: flex; align-items: center; gap: var(--space-2); }
+.home-hero-dot {
+	width: 8px; height: 8px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.35);
+	transition: background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.home-hero-dot.is-active { background: #fff; transform: scale(1.25); }
+
+@media (max-width: 640px) {
+	.home-hero-slides { min-height: 380px; }
+	.home-hero-slide-inner { padding-block: var(--space-7); }
+}
+
+/* =========================================================================
+   Homepage — value points, process steps, split layout, numbered steps
+   ========================================================================= */
+
+.value-point-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.value-point-list li { display: flex; align-items: flex-start; gap: var(--space-2); font-weight: 600; }
+.value-point-list svg { width: 18px; height: 18px; color: var(--color-success); flex-shrink: 0; margin-top: 0.15em; }
+
+.value-point-list-inline { flex-direction: row; flex-wrap: wrap; gap: var(--space-5); }
+.value-point-list-inline li { font-weight: 600; font-size: var(--fs-sm); }
+
+.business-line-card.has-image { padding: 0 0 var(--space-5); overflow: hidden; }
+.business-line-card.has-image > *:not(.business-line-card-image) { margin-inline: var(--space-5); }
+.business-line-card-image { display: block; aspect-ratio: 16 / 10; overflow: hidden; }
+.business-line-card-image img { width: 100%; height: 100%; object-fit: cover; }
+
+.process-steps {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+	gap: var(--space-5);
+	margin-bottom: var(--space-6);
+	counter-reset: none;
+}
+.process-step { display: flex; flex-direction: column; gap: var(--space-3); }
+.process-step-icon,
+.process-step-number {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px; height: 48px;
+	border-radius: var(--radius-md);
+	background: var(--color-paper-raised);
+	border: 1px solid var(--color-hairline);
+	overflow: hidden;
+}
+.process-step-number { font-weight: 800; font-size: var(--fs-md); color: var(--color-accent-strong); }
+.process-step-icon img { width: 100%; height: 100%; object-fit: cover; }
+.process-step-label { font-weight: 600; font-size: var(--fs-sm); }
+
+.split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center; }
+.split-layout.no-media { grid-template-columns: 1fr; max-width: 720px; }
+.split-layout-media { border-radius: var(--radius-lg); overflow: hidden; }
+.split-layout-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.numbered-step-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-5); }
+.numbered-step { padding: var(--space-5); border-radius: var(--radius-lg); background: var(--color-paper-raised); border: 1px solid var(--color-hairline); }
+.numbered-step-number { display: block; font-weight: 800; font-size: var(--fs-lg); color: var(--color-accent-strong); margin-bottom: var(--space-2); }
+.numbered-step h3 { margin-bottom: var(--space-2); }
+.numbered-step p { color: var(--color-ink-soft); font-size: var(--fs-sm); }
+
+.badge-row { display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: center; margin-top: var(--space-6); }
+.badge-item { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); text-align: center; }
+.badge-item img { width: 64px; height: 64px; object-fit: contain; }
+.badge-item span { font-size: var(--fs-xs); color: var(--color-ink-soft); font-weight: 600; }
+
+.section-footer-cta { margin-top: var(--space-6); }
+
+.cta-band-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+@media (max-width: 960px) {
+	.split-layout { grid-template-columns: 1fr; }
+	.split-layout-media { order: -1; }
+}
+
+/* =========================================================================
    Business line grid (home + 404)
    ========================================================================= */
 

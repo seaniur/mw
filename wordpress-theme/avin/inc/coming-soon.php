@@ -25,8 +25,11 @@ function avin_maybe_show_coming_soon(): void
     // and admin-post.php — the inquiry/notify handlers — use entirely
     // separate request flows), so this can't lock the team out of
     // wp-admin or block form submissions. Any logged-in account bypasses,
-    // regardless of role — everyone else sees the holding page.
-    if (is_user_logged_in()) {
+    // regardless of role — everyone else sees the holding page. The one
+    // exception is the Customizer's own preview iframe: without it, an
+    // admin editing Coming Soon Mode (logged in, by definition) could
+    // never actually see what they're changing.
+    if (is_user_logged_in() && !is_customize_preview()) {
         return;
     }
     if (!get_theme_mod('avin_coming_soon_enabled', false)) {
@@ -49,12 +52,34 @@ function avin_render_coming_soon_page(): void
     // falls back to the site's main logo (Customize → Site Identity).
     $logo_id = (int) get_theme_mod('avin_coming_soon_logo', 0) ?: (int) get_theme_mod('custom_logo', 0);
 
-    $categories = [
-        ['icon' => 'dog', 'label' => __('Freeze-Dried Pet Food', 'avin')],
-        ['icon' => 'dog', 'label' => __('Air-Dried Pet Food', 'avin')],
-        ['icon' => 'chicken-feet', 'label' => __('Chicken Feet Products', 'avin')],
-        ['icon' => 'powder', 'label' => __('Animal Protein Ingredients', 'avin')],
-    ];
+    // Boxes: whatever's been configured in Customize → Coming Soon Mode →
+    // Boxes, or the theme's own 4 category boxes when none have been
+    // added yet — never an empty section. The two shapes differ (an
+    // admin-added box carries an uploaded picture; the fallback uses the
+    // theme's inline SVG icon set) so the render loop below checks for
+    // whichever one a given box actually has.
+    $configured_boxes = avin_repeater('avin_coming_soon_boxes');
+    if (!empty($configured_boxes)) {
+        $boxes = array_map(fn ($row) => [
+            'icon_image_id' => (int) ($row['icon'] ?? 0),
+            'title' => $row['title'] ?? '',
+            'description' => $row['description'] ?? '',
+        ], $configured_boxes);
+    } else {
+        $boxes = [
+            ['icon_key' => 'dog', 'title' => __('Freeze-Dried Pet Food', 'avin'), 'description' => ''],
+            ['icon_key' => 'dog', 'title' => __('Air-Dried Pet Food', 'avin'), 'description' => ''],
+            ['icon_key' => 'chicken-feet', 'title' => __('Chicken Feet Products', 'avin'), 'description' => ''],
+            ['icon_key' => 'powder', 'title' => __('Animal Protein Ingredients', 'avin'), 'description' => ''],
+        ];
+    }
+
+    // The box grid's column counts (per breakpoint) are the only editable
+    // part of its layout — the card styling itself (border, radius, icon
+    // badge treatment) is fixed in the <style> block below, by design.
+    $cols_desktop = max(1, (int) get_theme_mod('avin_coming_soon_columns_desktop', 4));
+    $cols_tablet = max(1, (int) get_theme_mod('avin_coming_soon_columns_tablet', 2));
+    $cols_mobile = max(1, (int) get_theme_mod('avin_coming_soon_columns_mobile', 2));
 
     nocache_headers();
     ?>
@@ -116,14 +141,23 @@ function avin_render_coming_soon_page(): void
 			margin: 0 0 14px;
 		}
 		h1 { margin: 0 0 28px; font-size: clamp(1.8rem, 1.4rem + 2vw, 2.5rem); letter-spacing: -0.01em; }
+		/* Column counts are the only editable part of this grid's layout
+		   (Customize → Coming Soon Mode) — the card itself, below, is a
+		   fixed, uneditable container. */
 		.category-grid {
 			display: grid;
-			grid-template-columns: repeat(2, 1fr);
+			grid-template-columns: repeat(var(--cols-mobile, 2), 1fr);
 			gap: 12px;
 			max-width: 420px;
 			margin: 0 auto 28px;
 			padding: 0;
 			list-style: none;
+		}
+		@media (min-width: 641px) and (max-width: 960px) {
+			.category-grid { grid-template-columns: repeat(var(--cols-tablet, 2), 1fr); }
+		}
+		@media (min-width: 961px) {
+			.category-grid { grid-template-columns: repeat(var(--cols-desktop, 4), 1fr); }
 		}
 		.category-card {
 			display: flex;
@@ -143,9 +177,12 @@ function avin_render_coming_soon_page(): void
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			overflow: hidden;
 		}
 		.category-icon svg { width: 22px; height: 22px; }
+		.category-icon img { width: 100%; height: 100%; object-fit: contain; }
 		.category-label { font-size: 12px; font-weight: 700; line-height: 1.3; }
+		.category-desc { font-size: 11px; color: var(--color-ink-soft); line-height: 1.4; }
 		.cta {
 			display: inline-flex; align-items: center; gap: 8px;
 			padding: 0.9em 1.8em;
@@ -203,11 +240,20 @@ function avin_render_coming_soon_page(): void
 		<p class="eyebrow"><?php esc_html_e('International B2B Sourcing & Supply Partner', 'avin'); ?></p>
 		<h1><?php echo esc_html(get_bloginfo('name') ?: $title); ?></h1>
 
-		<ul class="category-grid">
-			<?php foreach ($categories as $category) : ?>
+		<ul class="category-grid" style="--cols-desktop: <?php echo esc_attr($cols_desktop); ?>; --cols-tablet: <?php echo esc_attr($cols_tablet); ?>; --cols-mobile: <?php echo esc_attr($cols_mobile); ?>;">
+			<?php foreach ($boxes as $box) : ?>
 				<li class="category-card">
-					<span class="category-icon" aria-hidden="true"><?php echo avin_icon($category['icon']); ?></span>
-					<span class="category-label"><?php echo esc_html($category['label']); ?></span>
+					<span class="category-icon" aria-hidden="true">
+						<?php if (!empty($box['icon_image_id'])) : ?>
+							<?php echo wp_get_attachment_image($box['icon_image_id'], [44, 44]); ?>
+						<?php elseif (!empty($box['icon_key'])) : ?>
+							<?php echo avin_icon($box['icon_key']); ?>
+						<?php endif; ?>
+					</span>
+					<span class="category-label"><?php echo esc_html($box['title']); ?></span>
+					<?php if (!empty($box['description'])) : ?>
+						<span class="category-desc"><?php echo esc_html($box['description']); ?></span>
+					<?php endif; ?>
 				</li>
 			<?php endforeach; ?>
 		</ul>

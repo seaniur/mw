@@ -202,6 +202,92 @@
 		});
 	}
 
+	/* ---- Homepage hero slider ------------------------------------------
+	 * Auto-rotates when there's more than one slide, pauses on hover/focus
+	 * (and never auto-advances at all under prefers-reduced-motion), and
+	 * is fully operable via the prev/next arrows and dots.
+	 */
+	function initHeroSlider() {
+		var root = document.querySelector('[data-hero-slider]');
+		if (!root) {
+			return;
+		}
+		var slides = Array.prototype.slice.call(root.querySelectorAll('.home-hero-slide'));
+		if (slides.length < 2) {
+			return;
+		}
+		var dots = Array.prototype.slice.call(root.querySelectorAll('[data-hero-dot]'));
+		var prevBtn = root.querySelector('[data-hero-prev]');
+		var nextBtn = root.querySelector('[data-hero-next]');
+		var current = slides.findIndex(function (s) {
+			return s.classList.contains('is-active');
+		});
+		if (current < 0) {
+			current = 0;
+		}
+		var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		var timer = null;
+
+		function show(index) {
+			current = (index + slides.length) % slides.length;
+			slides.forEach(function (slide, i) {
+				slide.classList.toggle('is-active', i === current);
+			});
+			dots.forEach(function (dot, i) {
+				dot.classList.toggle('is-active', i === current);
+			});
+		}
+
+		function next() {
+			show(current + 1);
+		}
+		function prev() {
+			show(current - 1);
+		}
+
+		function start() {
+			if (reduceMotion || timer) {
+				return;
+			}
+			timer = window.setInterval(next, 6000);
+		}
+		function stop() {
+			if (timer) {
+				window.clearInterval(timer);
+				timer = null;
+			}
+		}
+
+		if (prevBtn) {
+			prevBtn.addEventListener('click', function () {
+				prev();
+				stop();
+				start();
+			});
+		}
+		if (nextBtn) {
+			nextBtn.addEventListener('click', function () {
+				next();
+				stop();
+				start();
+			});
+		}
+		dots.forEach(function (dot, i) {
+			dot.addEventListener('click', function () {
+				show(i);
+				stop();
+				start();
+			});
+		});
+
+		root.addEventListener('mouseenter', stop);
+		root.addEventListener('mouseleave', start);
+		root.addEventListener('focusin', stop);
+		root.addEventListener('focusout', start);
+
+		start();
+	}
+
 	/* ---- "Request a Sample" hero CTA preselects the form's radio ------ */
 	function initSampleRequestLinks() {
 		document.querySelectorAll('[data-sample-request]').forEach(function (link) {
@@ -224,6 +310,7 @@
 		initMegaMenuCategories();
 		initMobileNav();
 		initSearchToggle();
+		initHeroSlider();
 		initSampleRequestLinks();
 	});
 })();

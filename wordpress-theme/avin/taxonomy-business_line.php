@@ -1,11 +1,14 @@
 <?php
 /**
- * Business-line landing page (/freeze-dried-pet-food/, /air-dried-pet-food/,
- * /chicken-feet-products/, /freeze-dried-human-food/, /ingredients-
- * solutions/). Follows the brief's Landing Page journey: Hero → grouped
- * product sections (Poultry / Marine / Fruits & Vegetables, where the line
- * has them) → flat product grid otherwise, e.g. Chicken Feet & Paws' five
- * named products.
+ * Business-line landing page — shared by both levels of the now-
+ * hierarchical business_line taxonomy:
+ * - A top-level GROUP (/food/, /pet-food/, /feed/) shows a grid of its
+ *   child lines (Chicken Feet Products, Freeze-Dried, etc.), the same
+ *   card the mega menu and homepage use.
+ * - A LEAF line (/food/chicken-feet-products/, /pet-food/freeze-dried/)
+ *   shows its product grid — grouped into Poultry / Marine / Fruits &
+ *   Vegetables sections where it has them, flat otherwise (e.g. Chicken
+ *   Feet & Paws' five named products).
  */
 
 if (!defined('ABSPATH')) {
@@ -22,7 +25,8 @@ $cta_primary_url = get_term_meta($term->term_id, 'avin_cta_primary_url', true) ?
 $cta_secondary_label = get_term_meta($term->term_id, 'avin_cta_secondary_label', true) ?: __('Request Partnership', 'avin');
 $cta_secondary_url = get_term_meta($term->term_id, 'avin_cta_secondary_url', true) ?: home_url('/contact/');
 
-$groups = avin_get_category_groups_for_line($term->term_id);
+$is_group = avin_term_is_group($term);
+$groups = $is_group ? [] : avin_get_category_groups_for_line($term->term_id);
 ?>
 
 <section class="page-hero">
@@ -40,7 +44,33 @@ $groups = avin_get_category_groups_for_line($term->term_id);
 </section>
 
 <div id="products">
-	<?php if (!empty($groups)) : ?>
+	<?php if ($is_group) :
+        $children = avin_get_business_line_children($term->term_id);
+        ?>
+		<section class="section">
+			<div class="container">
+				<?php if (!empty($children)) : ?>
+					<div class="business-line-grid">
+						<?php foreach ($children as $child) :
+                            $child_description = get_term_meta($child->term_id, 'avin_mega_description', true) ?: $child->description;
+                            $child_featured = (bool) get_term_meta($child->term_id, 'avin_featured', true);
+                            ?>
+							<a href="<?php echo esc_url(avin_business_line_url($child)); ?>" class="business-line-card<?php echo $child_featured ? ' is-featured' : ''; ?>">
+								<span class="business-line-card-icon"><?php echo avin_icon(get_term_meta($child->term_id, 'avin_icon', true) ?: 'single-ingredient'); ?></span>
+								<h3><?php echo esc_html($child->name); ?></h3>
+								<?php if ($child_description) : ?>
+									<p><?php echo esc_html(avin_trim($child_description, 120)); ?></p>
+								<?php endif; ?>
+								<span class="business-line-card-cta"><?php esc_html_e('Explore', 'avin'); ?> <?php echo avin_icon('arrow-end'); ?></span>
+							</a>
+						<?php endforeach; ?>
+					</div>
+				<?php else : ?>
+					<p class="empty-state"><?php esc_html_e('Lines in this group are being added soon.', 'avin'); ?></p>
+				<?php endif; ?>
+			</div>
+		</section>
+	<?php elseif (!empty($groups)) : ?>
 		<?php foreach ($groups as $group) :
             $products = avin_get_products($term->term_id, $group->term_id);
             if (empty($products)) {

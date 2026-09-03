@@ -76,8 +76,8 @@ add_action('wp_enqueue_scripts', 'avin_enqueue_assets');
 function avin_admin_assets($hook)
 {
     global $post_type;
-    $is_mega_item_screen = isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'mega_item';
-    if ($post_type !== 'product' && !$is_mega_item_screen) {
+    $is_business_line_screen = isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'business_line';
+    if ($post_type !== 'product' && !$is_business_line_screen) {
         return;
     }
     wp_enqueue_style('avin-admin', AVIN_URI . '/assets/css/admin.css', [], avin_asset_version('/assets/css/admin.css'));
@@ -259,46 +259,48 @@ function avin_on_activate(): void
     }
     avin_create_missing_pages();
     avin_seed_taxonomy_terms();
-    avin_seed_mega_menu_terms();
     flush_rewrite_rules();
     update_option('avin_setup_checked', 1);
-    update_option('avin_mega_menu_seeded', 1);
+    update_option('avin_rewrite_v2_flushed', 1);
 }
 add_action('after_switch_theme', 'avin_on_activate');
 
 /**
  * Self-heals installs that activated an older copy of this theme, or had a
  * required page/term later trashed, without needing a deactivate/
- * reactivate cycle. avin_create_missing_pages() always re-runs (it's a
- * cheap, idempotent get_page_by_path() check per page) specifically so
- * that updating the theme's files on an already-activated, already-live
- * site — e.g. this file starting to require a new Page like "Coming
- * Soon" — picks up the new page automatically on the next wp-admin visit,
- * without needing avin_setup_checked to be cleared. avin_seed_mega_menu_
- * terms() gets the same treatment via its own one-time flag, since it
- * was added after avin_setup_checked already existed on installs from
- * earlier versions of this theme — without a separate flag, those sites
- * would never seed the mega menu's categories/items at all. The heaviest
- * one-time work (rewrite flush, business-line term seeding) still runs
- * only once, gated by avin_setup_checked.
+ * reactivate cycle.
+ *
+ * Everything here is safe to run on every admin_init, not just once:
+ * avin_create_missing_pages() looks each required Page up by path first;
+ * avin_seed_taxonomy_terms() looks each term up by slug (or, for a
+ * business line, its pre-restructure legacy slug) before touching it, so
+ * a term already in its target state is left alone — which is also how
+ * an already-live site migrates its business_line terms from the old
+ * flat structure to the current group/line hierarchy the first time this
+ * file runs on it, with no separate migration step to remember to run.
+ *
+ * flush_rewrite_rules() is the one genuinely expensive step here, so it
+ * stays behind a one-time flag — but a *second*, independent flag
+ * (avin_rewrite_v2_flushed) exists alongside the original
+ * (avin_setup_checked) specifically because the URL structure itself
+ * changed after avin_setup_checked already existed on earlier installs
+ * of this theme. Without a new flag, a site that already had
+ * avin_setup_checked set would never re-flush and its new /group/line/
+ * URLs would silently 404 until someone happened to resave Settings →
+ * Permalinks.
  */
 function avin_ensure_setup(): void
 {
     avin_create_missing_pages();
+    avin_seed_taxonomy_terms();
 
-    // Business lines have to exist before the mega menu is seeded — its
-    // seed data looks a few of its Explore links up by business_line
-    // slug — so this runs first and unconditionally sets its own flag
-    // before the mega menu's flag is checked below.
     if (!get_option('avin_setup_checked')) {
-        avin_seed_taxonomy_terms();
-        flush_rewrite_rules();
         update_option('avin_setup_checked', 1);
     }
 
-    if (!get_option('avin_mega_menu_seeded')) {
-        avin_seed_mega_menu_terms();
-        update_option('avin_mega_menu_seeded', 1);
+    if (!get_option('avin_rewrite_v2_flushed')) {
+        flush_rewrite_rules();
+        update_option('avin_rewrite_v2_flushed', 1);
     }
 }
 add_action('admin_init', 'avin_ensure_setup');
